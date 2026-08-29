@@ -1,0 +1,54 @@
+<div class="wrapper-cart">
+  <h1 style="text-align: center;" ngClass="title">Create Product</h1>
+
+  <div style="width: 60%;margin: auto;background: #cbbebe;padding: 1rem;border-radius: 8px;" [formGroup]="product">
+    
+    <div class="form-control">
+      <label for="name">Name</label>
+      <div><input type="text" id="name" formControlName="name"></div>
+      @if(name?.dirty || name?.touched) {
+      @if(name?.hasError('required')){
+      <div style="color: rgb(189, 67, 67);">Name invalid</div>
+      }
+      }
+    </div>
+
+    <div class="form-control">
+      <label for="name">Price</label>
+      <div><input type="text" id="price" formControlName="price"></div>
+      @if(price?.dirty || price?.touched) {
+      @if(price?.hasError('required')){
+      <div style="color: rgb(189, 67, 67);">price invalid</div>
+      }
+      }
+    </div>
+
+    <div class="form-control">
+      <label for="productImage">
+        Product Image
+      </label>
+      <div>
+        <input type="file" id="productImage" accept="image/*" (change)="onImageSelected($event)">
+      </div>
+      <!-- IMAGE PREVIEW -->
+      @if(imagePreview) {
+      <div style="margin-top: 15px;">
+        <p>Preview:</p>
+        <img [src]="imagePreview" alt="Product preview" style="
+              width: 200px;
+              height: 200px;
+              object-fit: cover;
+              border-radius: 8px;
+              border: 1px solid #999;
+            ">
+      </div>
+      }
+    </div>
+    
+    <div class="form-control">
+      <div class="btn-navigation" (click)="handleAdd()">
+        Add to cart
+      </div>
+    </div>
+  </div>
+</div>

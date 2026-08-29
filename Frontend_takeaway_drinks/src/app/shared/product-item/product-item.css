@@ -1,0 +1,92 @@
+/*css for class*/
+.group-cart {
+  width: 75%;
+  background: #fff;
+  margin: auto;
+  padding: 2rem;
+  border-radius: 4px;
+}
+
+.header-cart {
+  display: flex;
+  padding: 1rem;
+  background-color: #e2e2e2;
+  text-transform: uppercase;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.col-1 {
+  flex: 1;
+  text-align: center;
+}
+
+.col-2 {
+  flex: 1.5;
+  text-align: center;
+}
+
+.col-3 {
+  flex: 1;
+  text-align: center;
+}
+
+.col-4 {
+  flex: .5;
+  text-align: center;
+}
+
+.body-cart {
+  display: flex;
+  flex-direction: column;
+  row-gap: 1rem;
+  margin-top: 1rem;
+  padding: 1rem;
+}
+
+.row-cart {
+  display: flex;
+  align-items: center;
+}
+
+.btn-main {
+  width: 50px;
+  height: 50px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: 10px;
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+}
+
+.delete-icon {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+
+  transition: all 0.2s ease;
+}
+
+/* Khi rê chuột */
+.btn-main:hover {
+  background-color: #ffe5e5;
+  transform: scale(1.05);
+}
+
+.btn-main:hover .delete-icon {
+  transform: scale(1.1);
+}
+
+/* Khi click */
+.btn-main:active {
+  transform: scale(0.95);
+}
+
+/* css for tag html */
+h1 {
+  color: white;
+}

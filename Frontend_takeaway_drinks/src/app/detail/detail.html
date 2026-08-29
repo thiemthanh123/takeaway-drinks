@@ -1,0 +1,72 @@
+<div class="detail-page">
+  <!-- HEADER -->
+  <header class="detail-header">
+    <button class="back-button" (click)="goBack()">
+      <span class="back-icon">←</span>
+      <span>Back</span>
+    </button>
+    <div class="shop-title">
+      <span class="shop-icon">🥤</span>
+      <span>TAKEAWAY DRINK</span>
+    </div>
+    <div class="header-space"></div>
+  </header>
+  <!-- CONTENT -->
+  <main class="detail-container">
+    @if (loading) {
+    <p style="font-size: 99px;">{{loading}}</p>
+    <div class="loading">
+      <div class="loading-icon">🥤</div>
+      <p>Loading product...</p>
+    </div>
+    }
+    @else {
+    <p style="font-size: 99px;">{{loading}}</p>
+    <div class="product-card">
+      <!-- IMAGE -->
+      <div class="image-section">
+        <div class="image-background">
+          <img [src]="product.img" [alt]="product.name" class="product-image">
+        </div>
+      </div>
+      <!-- PRODUCT INFO -->
+      <div class="product-info">
+        <div class="product-category">
+          TAKEAWAY DRINK
+        </div>
+        <h1 class="product-name">
+          {{ product.name }}
+        </h1>
+        <div class="divider"></div>
+        <div class="price-label">
+          PRICE
+        </div>
+        <div class="product-price">
+          {{ product.price | number:'1.0-0' }} ₫
+        </div>
+        <p class="description">
+          Một lựa chọn tuyệt vời cho ngày mới.
+          Thưởng thức đồ uống yêu thích của bạn
+          theo phong cách Takeaway Drink.
+        </p>
+        <!-- ACTION BUTTONS -->
+        <div class="action-buttons">
+          <button class="change-button" (click)="changeProduct()">
+            <span>✎</span>
+            Change
+          </button>
+          <button class="back-button-bottom" (click)="goBack()">
+            <span>←</span>
+            Back to Home
+          </button>
+        </div>
+      </div>
+    </div>
+    }
+  </main>
+  <!-- FOOTER -->
+  <footer class="detail-footer">
+    <span>Fresh drinks • Fast service • Takeaway</span>
+  </footer>
+
+</div>

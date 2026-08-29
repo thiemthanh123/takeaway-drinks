@@ -1,0 +1,39 @@
+<div class="group-cart">
+  <div class="header-cart">
+    <div class="col-1">Image</div>
+    <div class="col-2">Name</div>
+    <div class="col-3">Price</div>
+    <div class="col-4">Action</div>
+  </div>
+  <div class="body-cart">
+    @for (product of products; track $index) {
+    <div class="row-cart">
+      <div class="col-1">
+        <a [routerLink]="['/detail', product.id]">
+          <img src="{{ product.image }}" alt="{{ product.name }}" width="50px" height="auto" />
+        </a>
+      </div>
+
+      <div class="col-2">
+        <a [routerLink]="['/detail', product.id]">
+          {{ product.name | upperCasePipe }}
+        </a>
+      </div>
+
+      <div class="col-3">
+        {{ product.price | currency }}
+      </div>
+
+      <div class="col-4" (click)="handleDeleteProduct(product.id)">
+        <div class="btn-main">
+          <img src="assets/bin.png" alt="delete" width="50px" height="auto" />
+        </div>
+      </div>
+    </div>
+    }
+
+    <p style="text-align: right; font-size: 20px; font-weight: bold; margin-top: 20px;color: #931010;">
+      Total Price: {{totalPrice | currency}}
+    </p>
+  </div>
+</div>
