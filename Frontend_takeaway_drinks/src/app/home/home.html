@@ -1,4 +1,29 @@
-<div class="wrapper-cart">
-  <h1 style="text-align: center;" ngClass="title">SHOPPING COFFEE IN TAM LEP SHOP</h1>
-  <app-product-item [products]="products" (dataEvent)="handleDelete($event)"></app-product-item>
+<div class="product-list-page">
+  <div class="product-list-card">
+    <div class="page-header">
+      <div class="brand-badge">🥤 TakeDrink Away</div>
+
+      <div class="header-content">
+        <div>
+          <h1>SHOPPING COFFEE IN TAM LEP SHOP</h1>
+          <p>☕ Khám phá những món đồ uống và sản phẩm yêu thích của bạn</p>
+        </div>
+        <div class="coffee-icon">☕</div>
+      </div>
+    </div>
+
+    <div class="product-list-content">
+      <div class="section-title">
+        <div>
+          <h2>Danh sách sản phẩm</h2>
+          <p>Những sản phẩm đang có trong cửa hàng</p>
+        </div>
+        <div class="product-count">{{ products.length }} sản phẩm</div>
+      </div>
+
+      <div class="product-item-wrapper">
+        <app-product-item [products]="products" [loading]="loading" (dataEvent)="handleDelete($event)"></app-product-item>
+      </div>
+    </div>
+  </div>
 </div>

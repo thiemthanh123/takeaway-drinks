@@ -60,7 +60,7 @@ export class Detail implements OnInit {
     }
 
     this.router.navigate([
-      '/change',
+      '/edit',
       this.product.id
     ]);
   }

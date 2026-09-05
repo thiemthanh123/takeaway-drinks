@@ -46,6 +46,10 @@ export class Create {
 
 }
 
+  back(): void {
+    this.router.navigate(['/']);
+  }
+
   handleAdd(): void {
 
     if (this.product.invalid) {

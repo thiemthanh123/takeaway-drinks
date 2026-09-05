@@ -1,53 +1,93 @@
-<div class="wrapper-cart">
-  <h1 style="text-align: center;" ngClass="title">Create Product</h1>
-
-  <div style="width: 60%;margin: auto;background: #cbbebe;padding: 1rem;border-radius: 8px;" [formGroup]="product">
-    
-    <div class="form-control">
-      <label for="name">Name</label>
-      <div><input type="text" id="name" formControlName="name"></div>
-      @if(name?.dirty || name?.touched) {
-      @if(name?.hasError('required')){
-      <div style="color: rgb(189, 67, 67);">Name invalid</div>
-      }
-      }
-    </div>
-
-    <div class="form-control">
-      <label for="name">Price</label>
-      <div><input type="text" id="price" formControlName="price"></div>
-      @if(price?.dirty || price?.touched) {
-      @if(price?.hasError('required')){
-      <div style="color: rgb(189, 67, 67);">price invalid</div>
-      }
-      }
-    </div>
-
-    <div class="form-control">
-      <label for="productImage">
-        Product Image
-      </label>
+<div class="create-product-page">
+  <div class="page-decoration decoration-1"></div>
+  <div class="page-decoration decoration-2"></div>
+  <div class="create-card">
+    <div class="header">
       <div>
-        <input type="file" id="productImage" accept="image/*" (change)="onImageSelected($event)">
+        <span class="badge">🥤 TakeDrink Away</span>
+        <h1>Tạo sản phẩm mới</h1>
+        <p>Thêm món ăn hoặc đồ uống mới vào cửa hàng của bạn</p>
       </div>
-      <!-- IMAGE PREVIEW -->
-      @if(imagePreview) {
-      <div style="margin-top: 15px;">
-        <p>Preview:</p>
-        <img [src]="imagePreview" alt="Product preview" style="
-              width: 200px;
-              height: 200px;
-              object-fit: cover;
-              border-radius: 8px;
-              border: 1px solid #999;
-            ">
-      </div>
-      }
     </div>
-    
-    <div class="form-control">
-      <div class="btn-navigation" (click)="handleAdd()">
-        Add to cart
+    <div class="content" [formGroup]="product">
+      <div class="image-section">
+        <div class="image-title">
+          <h3>Hình ảnh sản phẩm</h3>
+          <span>{{ imagePreview ? 'Ảnh đã chọn' : 'Chưa có ảnh' }}</span>
+        </div>
+        <div class="image-wrapper">
+          @if (imagePreview) {
+          <img [src]="imagePreview" alt="Product preview">
+          <div class="image-label">✨ Preview</div>
+          } @else {
+          <div class="no-image">
+            <span class="no-image-icon">🖼️</span>
+            <strong>Chưa có hình ảnh</strong>
+            <small>Hình ảnh sản phẩm sẽ hiển thị ở đây</small>
+          </div>
+          }
+        </div>
+        <div class="food-icons">
+          <span>🥤</span>
+          <span>🍔</span>
+          <span>🍟</span>
+          <span>🍕</span>
+        </div>
+      </div>
+      <div class="form-section">
+        <div class="form-group">
+          <label for="name">Tên sản phẩm <span>*</span></label>
+          <div class="input-wrapper">
+            <span class="input-icon">🍔</span>
+            <input type="text" id="name" formControlName="name" placeholder="Ví dụ: Trà đào cam sả">
+          </div>
+          @if (name?.dirty || name?.touched) {
+          @if (name?.hasError('required')) {
+          <small class="error">Vui lòng nhập tên sản phẩm.</small>
+          }
+          }
+        </div>
+        <div class="form-group">
+          <label for="price">Giá sản phẩm <span>*</span></label>
+          <div class="input-wrapper">
+            <span class="input-icon">💰</span>
+            <input type="text" id="price" formControlName="price" placeholder="Ví dụ: 35000">
+            <span class="currency">VNĐ</span>
+          </div>
+          @if (price?.dirty || price?.touched) {
+          @if (price?.hasError('required')) {
+          <small class="error">Vui lòng nhập giá sản phẩm.</small>
+          }
+          }
+        </div>
+        <div class="form-group">
+          <label for="productImage">Hình ảnh sản phẩm</label>
+          <input type="file" id="productImage" accept="image/*" (change)="onImageSelected($event)" hidden
+            #productImageInput>
+          <button type="button" class="upload-btn" (click)="productImageInput.click()">
+            <span class="upload-icon">📁</span>
+            <span class="upload-content">
+              <strong>Chọn ảnh từ máy tính</strong>
+              <small>PNG, JPG hoặc WEBP</small>
+            </span>
+            <span class="upload-arrow">→</span>
+          </button>
+          @if (imagePreview) {
+          <div class="file-selected">
+            <span class="file-success">✓</span>
+            <div>
+              <strong>Đã chọn hình ảnh</strong>
+              <small>Hình ảnh đã được tải lên để xem trước</small>
+            </div>
+          </div>
+          } @else {
+          <small class="helper">Chọn hình ảnh đẹp để sản phẩm nổi bật hơn.</small>
+          }
+        </div>
+        <div class="actions">
+          <button type="button" class="btn btn-back" (click)="back()">← Back</button>
+          <button type="button" class="btn btn-save" (click)="handleAdd()">✓ Add Product</button>
+        </div>
       </div>
     </div>
   </div>

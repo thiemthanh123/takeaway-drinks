@@ -1,8 +1,260 @@
-.wrapper-cart {
-  background-image: linear-gradient(to right, #CC26D5 0%, #3d1071 100%);
-  height: 100vh;
+.product-list-page {
+  min-height: 100vh;
+  padding: 40px 20px;
+  background:
+    radial-gradient(circle at top left, rgba(255, 174, 88, 0.18), transparent 35%),
+    radial-gradient(circle at bottom right, rgba(255, 128, 0, 0.12), transparent 30%),
+    #fff8ef;
+  box-sizing: border-box;
 }
 
-h1 {
-  color: white;
+/* Main card */
+.product-list-card {
+  width: min(1200px, 100%);
+  margin: 0 auto;
+  background: #ffffff;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow:
+    0 15px 45px rgba(91, 53, 20, 0.12),
+    0 4px 12px rgba(91, 53, 20, 0.06);
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.page-header {
+  padding: 35px 40px 30px;
+  background: linear-gradient(
+    135deg,
+    #fff1df 0%,
+    #ffe2bf 55%,
+    #ffd09a 100%
+  );
+  border-bottom: 1px solid #f4d3ad;
+}
+
+.brand-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  padding: 8px 16px;
+
+  background: #ffffff;
+  color: #d86b00;
+
+  border: 1px solid #ffd19e;
+  border-radius: 30px;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  box-shadow: 0 4px 12px rgba(184, 91, 0, 0.08);
+}
+
+.header-content {
+  margin-top: 20px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 30px;
+}
+
+.header-content h1 {
+  margin: 0;
+
+  color: #5c2f12;
+
+  font-size: clamp(26px, 4vw, 40px);
+  font-weight: 800;
+  line-height: 1.2;
+
+  letter-spacing: -0.5px;
+}
+
+.header-content p {
+  margin: 12px 0 0;
+
+  color: #875c3d;
+
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.coffee-icon {
+  width: 85px;
+  height: 85px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(255, 255, 255, 0.75);
+
+  border-radius: 50%;
+
+  font-size: 42px;
+
+  box-shadow:
+    0 10px 25px rgba(133, 73, 25, 0.12);
+}
+
+/* =========================
+   PRODUCT CONTENT
+========================= */
+
+.product-list-content {
+  padding: 30px 40px 40px;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  margin-bottom: 25px;
+}
+
+.section-title h2 {
+  margin: 0;
+
+  color: #4a2917;
+
+  font-size: 24px;
+  font-weight: 800;
+}
+
+.section-title p {
+  margin: 6px 0 0;
+
+  color: #92725b;
+
+  font-size: 14px;
+}
+
+.product-count {
+  padding: 9px 16px;
+
+  background: #fff3e3;
+  color: #c45c00;
+
+  border: 1px solid #ffd6aa;
+  border-radius: 20px;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  white-space: nowrap;
+}
+
+/* =========================
+   PRODUCT ITEM WRAPPER
+========================= */
+
+.product-item-wrapper {
+  padding: 5px;
+
+  background: #fffaf5;
+
+  border: 1px solid #f1dfcd;
+  border-radius: 18px;
+}
+
+/*
+  Nếu product-item bên trong có background,
+  wrapper này sẽ tạo cảm giác card đẹp hơn.
+*/
+
+.product-item-wrapper ::ng-deep {
+  .group-cart {
+    background: transparent;
+    box-shadow: none;
+  }
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 768px) {
+
+  .product-list-page {
+    padding: 20px 12px;
+  }
+
+  .page-header {
+    padding: 25px 20px;
+  }
+
+  .header-content {
+    align-items: flex-start;
+  }
+
+  .header-content h1 {
+    font-size: 26px;
+  }
+
+  .header-content p {
+    font-size: 14px;
+  }
+
+  .coffee-icon {
+    width: 60px;
+    height: 60px;
+
+    font-size: 30px;
+  }
+
+  .product-list-content {
+    padding: 25px 20px 30px;
+  }
+
+  .section-title {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .section-title h2 {
+    font-size: 21px;
+  }
+
+  .product-count {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+
+  .product-list-card {
+    border-radius: 18px;
+  }
+
+  .header-content {
+    flex-direction: column;
+  }
+
+  .coffee-icon {
+    display: none;
+  }
+
+  .header-content h1 {
+    font-size: 23px;
+  }
+
+  .product-list-content {
+    padding: 20px 12px 25px;
+  }
+
+  .product-item-wrapper {
+    padding: 2px;
+    border-radius: 14px;
+  }
 }

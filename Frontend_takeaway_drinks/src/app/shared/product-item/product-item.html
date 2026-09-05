@@ -1,39 +1,106 @@
-<div class="group-cart">
-  <div class="header-cart">
-    <div class="col-1">Image</div>
-    <div class="col-2">Name</div>
-    <div class="col-3">Price</div>
-    <div class="col-4">Action</div>
-  </div>
-  <div class="body-cart">
-    @for (product of products; track $index) {
-    <div class="row-cart">
-      <div class="col-1">
-        <a [routerLink]="['/detail', product.id]">
-          <img src="{{ product.image }}" alt="{{ product.name }}" width="50px" height="auto" />
-        </a>
+<div class="home-page">
+  <div class="page-decoration decoration-1"></div>
+  <div class="page-decoration decoration-2"></div>
+  <div class="products-card">
+    <div class="page-header">
+      <div>
+        <span class="badge">🥤 TakeDrink Away</span>
+        <h1>Danh sách sản phẩm</h1>
+        <p>Quản lý các món ăn và đồ uống của cửa hàng</p>
       </div>
-
-      <div class="col-2">
-        <a [routerLink]="['/detail', product.id]">
-          {{ product.name | upperCasePipe }}
-        </a>
-      </div>
-
-      <div class="col-3">
-        {{ product.price | currency }}
-      </div>
-
-      <div class="col-4" (click)="handleDeleteProduct(product.id)">
-        <div class="btn-main">
-          <img src="assets/bin.png" alt="delete" width="50px" height="auto" />
+      <a routerLink="/create" class="add-product-btn">
+        <span>＋</span>
+        Thêm sản phẩm
+      </a>
+    </div>
+    @if (!loading) {
+      <div class="search-section">
+        <div class="search-box">
+          <span class="search-icon">🔍</span>
+          <input type="text" [(ngModel)]="searchText" placeholder="Tìm kiếm sản phẩm theo tên...">
+          @if (searchText) {
+            <button type="button" class="clear-search" (click)="searchText = ''">×</button>
+          }
+        </div>
+        <div class="search-result">
+          @if (searchText) {
+            Tìm thấy <strong>{{ filteredProducts.length }}</strong> sản phẩm
+          } @else {
+            <strong>{{ products.length }}</strong> sản phẩm
+          }
         </div>
       </div>
-    </div>
     }
-
-    <p style="text-align: right; font-size: 20px; font-weight: bold; margin-top: 20px;color: #931010;">
-      Total Price: {{totalPrice | currency}}
-    </p>
+    @if (!loading && products.length > 0) {
+      <div class="products-header">
+        <div class="col-image">Hình ảnh</div>
+        <div class="col-name">Tên sản phẩm</div>
+        <div class="col-price">Giá</div>
+        <div class="col-action">Thao tác</div>
+      </div>
+    }
+    <div class="products-body">
+      @if (loading) {
+        <div class="empty-state">
+          <div class="empty-icon">⏳</div>
+          <h3>Đang tải sản phẩm...</h3>
+          <p>Vui lòng chờ trong giây lát.</p>
+        </div>
+      } @else if (products.length === 0) {
+        <div class="empty-state">
+          <div class="empty-icon">🥤</div>
+          <h3>Chưa có sản phẩm</h3>
+          <p>Hãy thêm sản phẩm đầu tiên cho cửa hàng của bạn.</p>
+          <a routerLink="/create" class="empty-add-btn">＋ Thêm sản phẩm</a>
+        </div>
+      } @else {
+        @for (product of filteredProducts; track product.id) {
+          <div class="product-row">
+            <div class="col-image">
+              <a [routerLink]="['/detail', product.id]" class="product-image-link">
+                <div class="product-image">
+                  <img [src]="product.image" [alt]="product.name">
+                </div>
+              </a>
+            </div>
+            <div class="col-name">
+              <a [routerLink]="['/detail', product.id]" class="product-name">{{ product.name | upperCasePipe }}</a>
+            </div>
+            <div class="col-price">
+              <span class="price">{{ product.price | currency }}</span>
+            </div>
+            <div class="col-action">
+              <button type="button" class="delete-btn" (click)="handleDeleteProduct(product.id)" title="Xóa sản phẩm">
+                <span class="delete-icon">🗑️</span>
+                <span class="delete-text">Xóa</span>
+              </button>
+            </div>
+          </div>
+        }
+        @if (filteredProducts.length === 0 && searchText) {
+          <div class="empty-state">
+            <div class="empty-icon">🔍</div>
+            <h3>Không tìm thấy sản phẩm</h3>
+            <p>Không có sản phẩm nào phù hợp với "<strong>{{ searchText }}</strong>"</p>
+            <button type="button" class="empty-add-btn" (click)="searchText = ''">Xem tất cả sản phẩm</button>
+          </div>
+        }
+        @if (filteredProducts.length > 0) {
+          <div class="total-section">
+            <div class="total-label">
+              <span class="total-icon">🧾</span>
+              <div>
+                <small>Danh sách hiện tại</small>
+                <strong>{{ filteredProducts.length }} sản phẩm</strong>
+              </div>
+            </div>
+            <div class="total-price">
+              <small>Total Price</small>
+              <strong>{{ totalPrice | currency }}</strong>
+            </div>
+          </div>
+        }
+      }
+    </div>
   </div>
 </div>
