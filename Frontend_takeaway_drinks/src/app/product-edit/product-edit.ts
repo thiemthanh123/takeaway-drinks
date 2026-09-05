@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -19,12 +19,15 @@ export class ProductEditComponent implements OnInit {
   selectedFile: File | null = null;
   imagePreview = '';
 
+  showImage = false
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private fb: FormBuilder,
-    private productService: ProductService
-  ) {}
+    private productService: ProductService,
+    private cdr: ChangeDetectorRef
+  ) { }
 
   ngOnInit(): void {
     this.productForm = this.fb.group({
@@ -48,7 +51,7 @@ export class ProductEditComponent implements OnInit {
           name: product.name,
           price: product.price
         });
-        this.imagePreview = product.img || product.image || '';
+        this.imagePreview = product.img || '';
         this.loading = false;
       },
       error: (error: any) => {
@@ -60,25 +63,40 @@ export class ProductEditComponent implements OnInit {
   }
 
   onFileSelected(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    const file = input.files?.[0];
+  const input = event.target as HTMLInputElement;
+  const file = input.files?.[0];
 
-    if (!file) return;
+  if (!file) return;
 
-    if (!file.type.startsWith('image/')) {
-      alert('Vui lòng chọn file hình ảnh!');
-      this.selectedFile = null;
-      return;
-    }
-
-    this.selectedFile = file;
-
-    const reader = new FileReader();
-    reader.onload = () => {
-      this.imagePreview = reader.result as string;
-    };
-    reader.readAsDataURL(file);
+  if (!file.type.startsWith('image/')) {
+    alert('Vui lòng chọn file hình ảnh!');
+    this.selectedFile = null;
+    return;
   }
+
+  this.selectedFile = file;
+  this.showImage = false;
+
+  const reader = new FileReader();
+
+  reader.onload = () => {
+    this.imagePreview = reader.result as string;
+  };
+
+  reader.readAsDataURL(file);
+}
+
+toggleImage(): void {
+  this.showImage = !this.showImage;
+}
+
+get currentImageName(): string {
+  if (!this.imagePreview) return 'Chưa có ảnh';
+
+  if (this.selectedFile) return this.selectedFile.name;
+
+  return this.imagePreview.split('/').pop() || 'Ảnh hiện tại';
+}
 
   save(): void {
     if (this.productForm.invalid) {

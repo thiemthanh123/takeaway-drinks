@@ -1,7 +1,6 @@
 <div class="edit-product-page">
   <div class="page-decoration decoration-1"></div>
   <div class="page-decoration decoration-2"></div>
-
   <div class="edit-card">
     <div class="header">
       <div>
@@ -11,119 +10,90 @@
       </div>
       <button type="button" class="back-btn" (click)="back()">← Back</button>
     </div>
-
     @if (loading) {
-      <div class="loading">
-        <div class="loading-icon">🥤</div>
-        <p>Đang tải thông tin sản phẩm...</p>
-      </div>
+    <div class="loading">
+      <div class="loading-icon">🥤</div>
+      <p>Đang tải thông tin sản phẩm...</p>
+    </div>
     } @else {
-      <div class="content">
-        <div class="image-section">
-          <div class="image-title">
-            <h3>Hình ảnh sản phẩm</h3>
-            <span>{{ selectedFile ? 'Ảnh mới' : 'Ảnh hiện tại' }}</span>
+    <div class="content">
+      <form class="form-section" [formGroup]="productForm" (ngSubmit)="save()">
+        <div class="form-group">
+          <label>Tên sản phẩm <span>*</span></label>
+          <div class="input-wrapper">
+            <span class="input-icon">🍔</span>
+            <input type="text" formControlName="name" placeholder="Ví dụ: Trà đào cam sả">
           </div>
-
-          <div class="image-wrapper">
-            @if (imagePreview) {
-              <img [src]="imagePreview" alt="Product image" (error)="handleImageError()">
-            } @else {
-              <div class="no-image">
-                <span>🖼️</span>
-                <p>Chưa có hình ảnh</p>
-              </div>
-            }
-
-            <div class="image-label">{{ selectedFile ? '✨ Preview ảnh mới' : '🖼️ Ảnh hiện tại' }}</div>
-          </div>
-
-          @if (selectedFile) {
-            <div class="selected-image-info">
-              <div class="selected-icon">🖼️</div>
-              <div class="selected-details">
-                <strong>{{ selectedFile.name }}</strong>
-                <small>{{ (selectedFile.size / 1024 / 1024).toFixed(2) }} MB</small>
-              </div>
-              <div class="selected-check">✓</div>
-            </div>
-          } @else {
-            <div class="current-image-info">
-              <span>💡</span>
-              <p>Chọn ảnh mới bên dưới để thay đổi hình ảnh sản phẩm.</p>
-            </div>
+          @if (productForm.get('name')?.touched && productForm.get('name')?.invalid) {
+          <small class="error">Vui lòng nhập tên sản phẩm.</small>
           }
-
-          <div class="food-icons">
-            <span>🥤</span>
-            <span>🍔</span>
-            <span>🍟</span>
-            <span>🍕</span>
-          </div>
         </div>
-
-        <form class="form-section" [formGroup]="productForm" (ngSubmit)="save()">
-          <div class="form-group">
-            <label>Tên sản phẩm <span>*</span></label>
-            <div class="input-wrapper">
-              <span class="input-icon">🍔</span>
-              <input type="text" formControlName="name" placeholder="Ví dụ: Trà đào cam sả">
-            </div>
-            @if (productForm.get('name')?.touched && productForm.get('name')?.invalid) {
-              <small class="error">Vui lòng nhập tên sản phẩm.</small>
-            }
+        <div class="form-group">
+          <label>Giá sản phẩm <span>*</span></label>
+          <div class="input-wrapper">
+            <span class="input-icon">💰</span>
+            <input type="number" formControlName="price" placeholder="Ví dụ: 35000" min="0">
+            <span class="currency">VNĐ</span>
           </div>
-
-          <div class="form-group">
-            <label>Giá sản phẩm <span>*</span></label>
-            <div class="input-wrapper">
-              <span class="input-icon">💰</span>
-              <input type="number" formControlName="price" placeholder="Ví dụ: 35000" min="0">
-              <span class="currency">VNĐ</span>
-            </div>
-            @if (productForm.get('price')?.touched && productForm.get('price')?.invalid) {
-              <small class="error">Vui lòng nhập giá sản phẩm hợp lệ.</small>
-            }
-          </div>
-
-          <div class="form-group">
-            <label>Thay đổi hình ảnh</label>
-            <input #fileInput type="file" accept="image/png,image/jpeg,image/webp" (change)="onFileSelected($event)" hidden>
-
-            <button type="button" class="upload-btn" (click)="fileInput.click()">
-              <span class="upload-icon">📁</span>
-              <span class="upload-content">
-                <strong>Chọn ảnh từ máy tính</strong>
-                <small>PNG, JPG hoặc WEBP</small>
-              </span>
-              <span class="upload-arrow">→</span>
-            </button>
-
-            @if (selectedFile) {
-              <div class="file-selected">
-                <span class="file-success">✓</span>
-                <div>
-                  <strong>Đã chọn ảnh mới</strong>
-                  <small>{{ selectedFile.name }}</small>
-                </div>
-              </div>
-            } @else {
-              <small class="helper">Nếu không chọn ảnh mới, ảnh hiện tại sẽ được giữ nguyên.</small>
-            }
-          </div>
-
-          <div class="actions">
-            <button type="button" class="btn btn-back" (click)="back()" [disabled]="saving">← Back</button>
-            <button type="submit" class="btn btn-save" [disabled]="saving">
-              @if (!saving) {
-                <span>✓ Save Product</span>
-              } @else {
-                <span>⏳ Đang lưu...</span>
+          @if (productForm.get('price')?.touched && productForm.get('price')?.invalid) {
+          <small class="error">Vui lòng nhập giá sản phẩm hợp lệ.</small>
+          }
+        </div>
+        <div class="form-group">
+          <label>Hình ảnh sản phẩm</label>
+          <div class="selected-image-info">
+            <div class="selected-icon">🖼️</div>
+            <div class="selected-details">
+              <strong>{{ currentImageName }}</strong>
+              @if (selectedFile) {
+              <small>{{ (selectedFile.size / 1024 / 1024).toFixed(2) }} MB</small>
               }
-            </button>
+            </div>
           </div>
-        </form>
-      </div>
+          @if (imagePreview) {
+          <button type="button" class="preview-btn" (click)="toggleImage()">
+            {{ showImage ? 'Ẩn ảnh' : 'Xem ảnh' }}
+          </button>
+          }
+          @if (showImage && imagePreview) {
+          <div class="image-wrapper">
+            <img [src]="imagePreview" alt="Product image" (error)="handleImageError()">
+          </div>
+          }
+          <input #fileInput type="file" accept="image/png,image/jpeg,image/webp" (change)="onFileSelected($event)"
+            hidden>
+          <button type="button" class="upload-btn" (click)="fileInput.click()">
+            <span class="upload-icon">📁</span>
+            <span class="upload-content">
+              <strong>Chọn ảnh từ máy tính</strong>
+              <small>PNG, JPG hoặc WEBP</small>
+            </span>
+            <span class="upload-arrow">→</span>
+          </button>
+          @if (selectedFile) {
+          <div class="file-selected">
+            <span class="file-success">✓</span>
+            <div>
+              <strong>Đã chọn ảnh mới</strong>
+              <small>{{ selectedFile.name }}</small>
+            </div>
+          </div>
+          } @else {
+          <small class="helper">Nếu không chọn ảnh mới, ảnh hiện tại sẽ được giữ nguyên.</small>
+          }
+        </div>
+        <div class="actions">
+          <button type="button" class="btn btn-back" (click)="back()" [disabled]="saving">← Back</button>
+          <button type="submit" class="btn btn-save" [disabled]="saving">
+            @if (!saving) {
+            <span>✓ Save Product</span>
+            } @else {
+            <span>⏳ Đang lưu...</span>
+            }
+          </button>
+        </div>
+      </form>
+    </div>
     }
   </div>
 </div>
