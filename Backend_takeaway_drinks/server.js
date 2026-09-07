@@ -78,65 +78,83 @@ app.get('/api/products/:id', async (req, res) => {
 });
 // CREATE PRODUCT
 app.post('/api/products', upload.single('image'), async (req, res) => {
-    try {
-        const { name, price } = req.body;
-        if (!req.file) {
-            return res.status(400).json({
-                status: 400,
-                message: 'Vui lòng chọn ảnh sản phẩm',
-                data: null
-            });
-        }
-        const imagePath = `assets/list-drinks/${req.file.filename}`;
-        const result = await pool.query(
-            `INSERT INTO product (name, price, img) VALUES ($1, $2, $3) RETURNING *`,
-            [name, price, imagePath]
-        );
-        res.status(200).json({
-            status: 200,
-            message: 'Success',
-            data: result.rows[0]
-        });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({
-            status: 500,
-            message: 'Lỗi tạo sản phẩm',
-            data: null
-        });
+  try {
+    const { name, price, category } = req.body;
+    if (!req.file) {
+      return res.status(400).json({
+        status: 400,
+        message: 'Vui lòng chọn ảnh sản phẩm',
+        data: null
+      });
     }
+    const imagePath = `assets/list-drinks/${req.file.filename}`;
+    const result = await pool.query(
+      `INSERT INTO product (name, price, img, category) VALUES ($1, $2, $3, $4) RETURNING *`,
+      [name, price, imagePath, category]
+    );
+    res.status(200).json({
+      status: 200,
+      message: 'Success',
+      data: result.rows[0]
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      status: 500,
+      message: 'Lỗi tạo sản phẩm',
+      data: null
+    });
+  }
 });
 // UPDATE PRODUCT
 app.put('/api/products/:id', upload.single('img'), async (req, res) => {
-    try {
-        const { id } = req.params;
-        const { name, price } = req.body;
-        const oldProduct = await pool.query('SELECT * FROM product WHERE id = $1', [id]);
-        if (oldProduct.rows.length === 0) {
-            return res.status(404).json({
-                status: 404,
-                message: 'Không tìm thấy sản phẩm',
-                data: null
-            });
-        }
-        const imagePath = req.file ? `assets/list-drinks/${req.file.filename}` : oldProduct.rows[0].img;
-        const result = await pool.query(
-            `UPDATE product SET name = $1, price = $2, img = $3 WHERE id = $4 RETURNING *`,
-            [name, price, imagePath, id]
-        );
-        res.status(200).json({
-            status: 200,
-            message: 'Success',
-            data: result.rows[0]
-        });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({
-            status: 500,
-            message: 'Lỗi cập nhật sản phẩm',
-            data: null
-        });
+  try {
+    const { id } = req.params;
+    const { name, price } = req.body;
+    const oldProduct = await pool.query('SELECT * FROM product WHERE id = $1', [id]);
+    if (oldProduct.rows.length === 0) {
+      if (req.file) {
+        fs.unlink(path.join(__dirname, 'src', 'assets/list-drinks', req.file.filename), () => { });
+      }
+      return res.status(404).json({
+        status: 404,
+        message: 'Không tìm thấy sản phẩm',
+        data: null
+      });
     }
+    const imagePath = req.file
+      ? `assets/list-drinks/${req.file.filename}`
+      : oldProduct.rows[0].img;
+    let result;
+    try {
+      result = await pool.query(
+        `UPDATE product SET name = $1, price = $2, img = $3 WHERE id = $4 RETURNING *`,
+        [name, price, imagePath, id]
+      );
+    } catch (error) {
+      if (req.file) {
+        fs.unlink(path.join(__dirname, 'src', 'assets/list-drinks', req.file.filename), () => { });
+      }
+      throw error;
+    }
+    if (req.file && oldProduct.rows[0].img) {
+      fs.unlink(path.join(__dirname, 'src', oldProduct.rows[0].img), (err) => {
+        if (err) console.error('Lỗi xóa ảnh cũ:', err);
+      });
+    }
+    res.status(200).json({
+      status: 200,
+      message: 'Success',
+      data: result.rows[0]
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      status: 500,
+      message: 'Lỗi cập nhật sản phẩm',
+      data: null
+    });
+  }
 });
 // DELETE PRODUCT
 app.delete('/api/products/:id', async (req, res) => {

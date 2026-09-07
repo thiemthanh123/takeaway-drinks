@@ -22,29 +22,19 @@ export class ProductItemComponent {
   @Input() loading: boolean = true;
   @Output() dataEvent = new EventEmitter<number>();
 
-  // =========================
-  // SEARCH
-  // =========================
-
   searchText: string = '';
   constructor(){}
   ngOnInit(): void {
-    console.log('ProductItemComponent initialized');
   }
 
   get filteredProducts(): any[] {
 
-    const keyword = this.searchText
-      .trim()
-      .toLowerCase();
+    const keyword = this.searchText.trim().toLowerCase();
 
-    // Không nhập search
-    // => hiển thị toàn bộ sản phẩm
     if (!keyword) {
       return this.products;
     }
 
-    // Tìm theo tên sản phẩm
     return this.products.filter(product =>
       product.name
         ?.toLowerCase()

@@ -14,8 +14,11 @@ export class Create {
   imagePreview: string | null = null;
   product = new FormGroup({
     name: new FormControl('', Validators.required),
-    price: new FormControl('', Validators.required)
+    price: new FormControl('', Validators.required),
+    category: new FormControl('', Validators.required)
   })
+
+  selectedCategory: string | null = null;
 
 
   get name() {
@@ -79,6 +82,11 @@ export class Create {
       this.imageFile
     );
 
+    formData.append(
+      'category',
+      this.selectedCategory || ''
+    );
+
     this.productService.createProduct(formData)
       .subscribe({
         next: (response) => {
@@ -94,4 +102,19 @@ export class Create {
         }
       });
   }
+
+  selectCategory(category: string): void {
+    this.selectedCategory = category;
+    this.product.patchValue({
+      category: category
+    });
+  }
+
+  changeCategory(): void {
+    this.selectedCategory = null;
+    this.product.patchValue({
+      category: ''
+    });
+  }
+
 }

@@ -8,10 +8,6 @@
         <h1>Danh sách sản phẩm</h1>
         <p>Quản lý các món ăn và đồ uống của cửa hàng</p>
       </div>
-      <a routerLink="/create" class="add-product-btn">
-        <span>＋</span>
-        Thêm sản phẩm
-      </a>
     </div>
     @if (!loading) {
       <div class="search-section">
@@ -50,8 +46,6 @@
         <div class="empty-state">
           <div class="empty-icon">🥤</div>
           <h3>Chưa có sản phẩm</h3>
-          <p>Hãy thêm sản phẩm đầu tiên cho cửa hàng của bạn.</p>
-          <a routerLink="/create" class="empty-add-btn">＋ Thêm sản phẩm</a>
         </div>
       } @else {
         @for (product of filteredProducts; track product.id) {

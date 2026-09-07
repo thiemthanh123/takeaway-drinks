@@ -32,7 +32,8 @@ export class ProductEditComponent implements OnInit {
   ngOnInit(): void {
     this.productForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(2)]],
-      price: [null, [Validators.required, Validators.min(0)]]
+      price: [null, [Validators.required, Validators.min(0)]],
+      category: ['', Validators.required]
     });
 
     const id = this.route.snapshot.paramMap.get('id');
@@ -49,7 +50,8 @@ export class ProductEditComponent implements OnInit {
         const product = data.data;
         this.productForm.patchValue({
           name: product.name,
-          price: product.price
+          price: product.price,
+          category: product.category
         });
         this.imagePreview = product.img || '';
         this.loading = false;
