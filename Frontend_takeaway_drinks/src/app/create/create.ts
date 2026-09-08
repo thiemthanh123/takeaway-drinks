@@ -78,7 +78,7 @@ export class Create {
     );
 
     formData.append(
-      'image',
+      'img',
       this.imageFile
     );
 

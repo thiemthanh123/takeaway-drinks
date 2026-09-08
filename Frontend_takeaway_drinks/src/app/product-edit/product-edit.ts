@@ -11,6 +11,7 @@ import { ProductService } from '../../services/product.service';
   templateUrl: './product-edit.html',
   styleUrl: './product-edit.css'
 })
+
 export class ProductEditComponent implements OnInit {
   productForm!: FormGroup;
   productId!: number;
@@ -18,8 +19,7 @@ export class ProductEditComponent implements OnInit {
   saving = false;
   selectedFile: File | null = null;
   imagePreview = '';
-
-  showImage = false
+  showImage = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -35,7 +35,6 @@ export class ProductEditComponent implements OnInit {
       price: [null, [Validators.required, Validators.min(0)]],
       category: ['', Validators.required]
     });
-
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.productId = Number(id);
@@ -55,6 +54,7 @@ export class ProductEditComponent implements OnInit {
         });
         this.imagePreview = product.img || '';
         this.loading = false;
+        this.cdr.detectChanges();
       },
       error: (error: any) => {
         console.error('Không thể lấy thông tin sản phẩm:', error);
@@ -64,57 +64,90 @@ export class ProductEditComponent implements OnInit {
     });
   }
 
-  onFileSelected(event: Event): void {
-  const input = event.target as HTMLInputElement;
-  const file = input.files?.[0];
-
-  if (!file) return;
-
-  if (!file.type.startsWith('image/')) {
-    alert('Vui lòng chọn file hình ảnh!');
-    this.selectedFile = null;
-    return;
+  get categoryClass(): string {
+    const category = this.productForm?.get('category')?.value;
+    if (category === 'food') {
+      return 'category-food';
+    }
+    if (category === 'drink') {
+      return 'category-drink';
+    }
+    return '';
   }
 
-  this.selectedFile = file;
-  this.showImage = false;
+  get categoryName(): string {
+    const category = this.productForm?.get('category')?.value;
+    if (category === 'food') {
+      return 'Đồ ăn';
+    }
+    if (category === 'drink') {
+      return 'Đồ uống';
+    }
+    return '';
+  }
 
-  const reader = new FileReader();
+  get categoryIcon(): string {
+    const category = this.productForm?.get('category')?.value;
+    if (category === 'food') {
+      return '🍔';
+    }
+    if (category === 'drink') {
+      return '🥤';
+    }
+    return '📦';
+  }
 
-  reader.onload = () => {
-    this.imagePreview = reader.result as string;
-  };
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+    if (!file) {
+      return;
+    }
+    if (!file.type.startsWith('image/')) {
+      alert('Vui lòng chọn file hình ảnh!');
+      this.selectedFile = null;
+      return;
+    }
+    this.selectedFile = file;
+    this.showImage = false;
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.imagePreview = reader.result as string;
+      this.cdr.detectChanges();
+    };
+    reader.readAsDataURL(file);
+  }
 
-  reader.readAsDataURL(file);
-}
+  toggleImage(): void {
+    this.showImage = !this.showImage;
+  }
 
-toggleImage(): void {
-  this.showImage = !this.showImage;
-}
-
-get currentImageName(): string {
-  if (!this.imagePreview) return 'Chưa có ảnh';
-
-  if (this.selectedFile) return this.selectedFile.name;
-
-  return this.imagePreview.split('/').pop() || 'Ảnh hiện tại';
-}
+  get currentImageName(): string {
+    if (!this.imagePreview) {
+      return 'Chưa có ảnh';
+    }
+    if (this.selectedFile) {
+      return this.selectedFile.name;
+    }
+    return this.imagePreview
+      .split('/')
+      .pop()
+      ?.replace(/^\d+-\d+_/, '') || 'Ảnh hiện tại';
+  }
 
   save(): void {
     if (this.productForm.invalid) {
       this.productForm.markAllAsTouched();
       return;
     }
-
     this.saving = true;
     const formData = new FormData();
     formData.append('name', this.productForm.value.name);
     formData.append('price', this.productForm.value.price.toString());
-
+    formData.append('category', this.productForm.value.category);
     if (this.selectedFile) {
       formData.append('img', this.selectedFile);
     }
-
     this.productService.updateProduct(this.productId, formData).subscribe({
       next: () => {
         this.saving = false;

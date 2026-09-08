@@ -1,478 +1,507 @@
 .detail-page {
-min-height: 100vh;
-display: flex;
-flex-direction: column;
-font-family: Arial, sans-serif;
-background: #f8fafc;
-color: #1e293b;
-transition: background 0.4s ease;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    font-family: Arial, sans-serif;
+    background: #f8fafc;
+    color: #1e293b;
+    transition: background 0.4s ease;
 }
 
 .detail-page.drink-page {
-background: linear-gradient(135deg, #eff6ff 0%, #f0f9ff 50%, #ecfeff 100%);
+    background: linear-gradient(135deg, #eff6ff 0%, #f0f9ff 50%, #ecfeff 100%);
 }
 
 .detail-page.food-page {
-background: linear-gradient(135deg, #fff7ed 0%, #fffaf5 50%, #fef2f2 100%);
+    background: linear-gradient(135deg, #fff7ed 0%, #fffaf5 50%, #fef2f2 100%);
 }
 
 .detail-header {
-height: 75px;
-display: flex;
-align-items: center;
-justify-content: space-between;
-padding: 0 6%;
-background: rgba(255, 255, 255, 0.85);
-backdrop-filter: blur(15px);
-border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-position: sticky;
-top: 0;
-z-index: 10;
+    height: 75px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 6%;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(15px);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    position: sticky;
+    top: 0;
+    z-index: 10;
 }
 
 .back-button {
-display: flex;
-align-items: center;
-gap: 9px;
-min-width: 100px;
-padding: 10px 16px;
-font-size: 14px;
-font-weight: 600;
-color: #475569;
-background: transparent;
-border: 1px solid #e2e8f0;
-border-radius: 12px;
-cursor: pointer;
-transition: all 0.25s ease;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    min-width: 100px;
+    padding: 10px 16px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #475569;
+    background: transparent;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.25s ease;
 }
 
 .back-button:hover {
-transform: translateX(-4px);
-background: #ffffff;
-box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    transform: translateX(-4px);
+    background: #ffffff;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
 }
 
 .back-icon {
-font-size: 20px;
+    font-size: 20px;
 }
 
 .shop-title {
-display: flex;
-align-items: center;
-gap: 10px;
-font-size: 17px;
-font-weight: 800;
-letter-spacing: 1px;
-color: #1e293b;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 17px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    color: #1e293b;
 }
 
 .shop-icon {
-width: 42px;
-height: 42px;
-display: flex;
-align-items: center;
-justify-content: center;
-font-size: 23px;
-background: #ffffff;
-border-radius: 12px;
-box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 23px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
 }
 
 .header-space {
-min-width: 100px;
+    min-width: 100px;
 }
 
 .detail-container {
-width: 100%;
-max-width: 1200px;
-margin: auto;
-padding: 55px 25px;
-flex: 1;
-display: flex;
-align-items: center;
-justify-content: center;
-box-sizing: border-box;
+    width: 100%;
+    max-width: 1200px;
+    margin: auto;
+    padding: 55px 25px;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
 }
 
 .loading {
-display: flex;
-flex-direction: column;
-align-items: center;
-justify-content: center;
-gap: 15px;
-min-height: 400px;
-color: #64748b;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    min-height: 400px;
+    color: #64748b;
 }
 
 .loading-icon {
-font-size: 55px;
-animation: floating 1.5s ease-in-out infinite;
+    font-size: 55px;
+    animation: floating 1.5s ease-in-out infinite;
 }
 
 @keyframes floating {
-0% {
-transform: translateY(0);
-}
-50% {
-transform: translateY(-12px);
-}
-100% {
-transform: translateY(0);
-}
+    0% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-12px);
+    }
+
+    100% {
+        transform: translateY(0);
+    }
 }
 
 .product-card {
-width: 100%;
-display: grid;
-grid-template-columns: 1fr 1fr;
-overflow: hidden;
-background: rgba(255, 255, 255, 0.92);
-border-radius: 28px;
-box-shadow: 0 25px 70px rgba(0, 0, 0, 0.1);
-border: 1px solid rgba(255, 255, 255, 0.8);
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.92);
+    border-radius: 28px;
+    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.8);
 }
 
 .image-section {
-min-height: 550px;
-padding: 45px;
-display: flex;
-align-items: center;
-justify-content: center;
-position: relative;
+    min-height: 550px;
+    padding: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
 }
 
 .drink-page .image-section {
-background: linear-gradient(135deg, #dbeafe, #cffafe);
+    background: linear-gradient(135deg, #dbeafe, #cffafe);
 }
 
 .food-page .image-section {
-background: linear-gradient(135deg, #ffedd5, #fee2e2);
+    background: linear-gradient(135deg, #ffedd5, #fee2e2);
 }
 
 .image-background {
-width: 100%;
-height: 100%;
-min-height: 460px;
-display: flex;
-align-items: center;
-justify-content: center;
-padding: 20px;
-background: rgba(255, 255, 255, 0.45);
-border-radius: 24px;
-box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    min-height: 460px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.45);
+    border-radius: 24px;
+    box-sizing: border-box;
 }
 
 .product-image {
-width: 100%;
-height: 100%;
-max-height: 460px;
-object-fit: contain;
-border-radius: 20px;
-filter: drop-shadow(0 25px 20px rgba(0, 0, 0, 0.15));
-transition: transform 0.4s ease;
+    width: 100%;
+    height: 100%;
+    max-height: 460px;
+    object-fit: contain;
+    border-radius: 20px;
+    filter: drop-shadow(0 25px 20px rgba(0, 0, 0, 0.15));
+    transition: transform 0.4s ease;
 }
 
 .product-image:hover {
-transform: scale(1.05) rotate(-1deg);
+    transform: scale(1.05) rotate(-1deg);
 }
 
 .product-info {
-padding: 60px 55px;
-display: flex;
-flex-direction: column;
-justify-content: center;
-background: #ffffff;
+    padding: 60px 55px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: #ffffff;
 }
 
 .product-category {
-display: inline-flex;
-align-self: flex-start;
-align-items: center;
-padding: 8px 16px;
-margin-bottom: 18px;
-font-size: 12px;
-font-weight: 800;
-letter-spacing: 0.8px;
-border-radius: 999px;
+    display: inline-flex;
+    align-self: flex-start;
+    align-items: center;
+    padding: 8px 16px;
+    margin-bottom: 18px;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.8px;
+    border-radius: 999px;
 }
 
 .drink-category {
-color: #0369a1;
-background: #e0f2fe;
-border: 1px solid #bae6fd;
+    color: #0369a1;
+    background: #e0f2fe;
+    border: 1px solid #bae6fd;
 }
 
 .food-category {
-color: #c2410c;
-background: #ffedd5;
-border: 1px solid #fed7aa;
+    color: #c2410c;
+    background: #ffedd5;
+    border: 1px solid #fed7aa;
 }
 
 .product-name {
-margin: 0;
-font-size: 42px;
-line-height: 1.15;
-font-weight: 800;
-letter-spacing: -1px;
-color: #1e293b;
+    margin: 0;
+    font-size: 42px;
+    line-height: 1.15;
+    font-weight: 800;
+    letter-spacing: -1px;
+    color: #1e293b;
 }
 
 .divider {
-width: 75px;
-height: 5px;
-margin: 25px 0;
-border-radius: 20px;
+    width: 75px;
+    height: 5px;
+    margin: 25px 0;
+    border-radius: 20px;
 }
 
 .drink-page .divider {
-background: linear-gradient(90deg, #0284c7, #22d3ee);
+    background: linear-gradient(90deg, #0284c7, #22d3ee);
 }
 
 .food-page .divider {
-background: linear-gradient(90deg, #ea580c, #ef4444);
+    background: linear-gradient(90deg, #ea580c, #ef4444);
 }
 
 .price-label {
-font-size: 12px;
-font-weight: 800;
-letter-spacing: 2px;
-color: #94a3b8;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    color: #94a3b8;
 }
 
 .product-price {
-margin-top: 8px;
-font-size: 40px;
-font-weight: 800;
+    margin-top: 8px;
+    font-size: 40px;
+    font-weight: 800;
 }
 
 .drink-page .product-price {
-color: #0284c7;
+    color: #0284c7;
 }
 
 .food-page .product-price {
-color: #ea580c;
+    color: #ea580c;
 }
 
 .description {
-margin: 28px 0;
-font-size: 16px;
-line-height: 1.8;
-color: #64748b;
+    margin: 28px 0;
+    font-size: 16px;
+    line-height: 1.8;
+    color: #64748b;
 }
 
 .product-type-info {
-display: flex;
-align-items: center;
-gap: 14px;
-padding: 16px;
-margin-bottom: 30px;
-border-radius: 16px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px;
+    margin-bottom: 30px;
+    border-radius: 16px;
 }
 
 .drink-page .product-type-info {
-background: #f0f9ff;
-border: 1px solid #bae6fd;
+    background: #f0f9ff;
+    border: 1px solid #bae6fd;
 }
 
 .food-page .product-type-info {
-background: #fff7ed;
-border: 1px solid #fed7aa;
+    background: #fff7ed;
+    border: 1px solid #fed7aa;
 }
 
 .type-icon {
-width: 52px;
-height: 52px;
-display: flex;
-align-items: center;
-justify-content: center;
-font-size: 26px;
-background: #ffffff;
-border-radius: 15px;
+    width: 52px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    background: #ffffff;
+    border-radius: 15px;
 }
 
 .product-type-info div {
-display: flex;
-flex-direction: column;
-gap: 5px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
 }
 
 .product-type-info strong {
-font-size: 15px;
-color: #334155;
+    font-size: 15px;
+    color: #334155;
 }
 
 .product-type-info small {
-font-size: 12px;
-color: #64748b;
+    font-size: 12px;
+    color: #64748b;
 }
 
 .action-buttons {
-display: flex;
-gap: 15px;
-margin-top: auto;
+    display: flex;
+    gap: 15px;
+    margin-top: auto;
 }
 
 .change-button,
 .back-button-bottom {
-flex: 1;
-display: flex;
-align-items: center;
-justify-content: center;
-gap: 8px;
-padding: 15px 20px;
-font-size: 14px;
-font-weight: 700;
-border-radius: 14px;
-cursor: pointer;
-transition: all 0.3s ease;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 15px 20px;
+    font-size: 14px;
+    font-weight: 700;
+    border-radius: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
 }
 
 .change-button {
-color: #ffffff;
-border: none;
+    color: #ffffff;
+    border: none;
 }
 
 .drink-page .change-button {
-background: linear-gradient(135deg, #0284c7, #06b6d4);
-box-shadow: 0 10px 25px rgba(2, 132, 199, 0.25);
+    background: linear-gradient(135deg, #0284c7, #06b6d4);
+    box-shadow: 0 10px 25px rgba(2, 132, 199, 0.25);
 }
 
 .food-page .change-button {
-background: linear-gradient(135deg, #ea580c, #ef4444);
-box-shadow: 0 10px 25px rgba(234, 88, 12, 0.25);
+    background: linear-gradient(135deg, #ea580c, #ef4444);
+    box-shadow: 0 10px 25px rgba(234, 88, 12, 0.25);
 }
 
 .change-button:hover {
-transform: translateY(-3px);
-filter: brightness(1.05);
+    transform: translateY(-3px);
+    filter: brightness(1.05);
 }
 
 .back-button-bottom {
-color: #475569;
-background: #ffffff;
-border: 1px solid #e2e8f0;
+    color: #475569;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
 }
 
 .back-button-bottom:hover {
-background: #f8fafc;
-transform: translateY(-3px);
-box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+    background: #f8fafc;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
 }
 
 .detail-footer {
-padding: 22px;
-text-align: center;
-font-size: 13px;
-font-weight: 600;
-color: #64748b;
-background: rgba(255, 255, 255, 0.65);
-border-top: 1px solid rgba(0, 0, 0, 0.05);
+    padding: 22px;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 600;
+    color: #64748b;
+    background: rgba(255, 255, 255, 0.65);
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .drink-page .detail-footer {
-color: #0369a1;
+    color: #0369a1;
 }
 
 .food-page .detail-footer {
-color: #c2410c;
+    color: #c2410c;
 }
 
 @media (max-width: 900px) {
-.detail-container {
-padding: 35px 20px;
-}
+    .detail-container {
+        padding: 35px 20px;
+    }
 
-.product-card {
-grid-template-columns: 1fr;
-}
+    .product-card {
+        grid-template-columns: 1fr;
+    }
 
-.image-section {
-min-height: 400px;
-padding: 30px;
-}
+    .image-section {
+        min-height: 400px;
+        padding: 30px;
+    }
 
-.image-background {
-min-height: 340px;
-}
+    .image-background {
+        min-height: 340px;
+    }
 
-.product-info {
-padding: 40px;
-}
+    .product-info {
+        padding: 40px;
+    }
 }
 
 @media (max-width: 600px) {
-.detail-header {
-height: 65px;
-padding: 0 15px;
+    .detail-header {
+        height: 65px;
+        padding: 0 15px;
+    }
+
+    .back-button {
+        min-width: auto;
+        padding: 9px 12px;
+    }
+
+    .back-button span:last-child {
+        display: none;
+    }
+
+    .header-space {
+        display: none;
+    }
+
+    .shop-title {
+        font-size: 13px;
+        letter-spacing: 0.5px;
+    }
+
+    .shop-icon {
+        width: 38px;
+        height: 38px;
+    }
+
+    .detail-container {
+        padding: 20px 12px;
+    }
+
+    .product-card {
+        border-radius: 20px;
+    }
+
+    .image-section {
+        min-height: 330px;
+        padding: 20px;
+    }
+
+    .image-background {
+        min-height: 290px;
+        padding: 10px;
+    }
+
+    .product-info {
+        padding: 30px 22px;
+    }
+
+    .product-name {
+        font-size: 32px;
+    }
+
+    .product-price {
+        font-size: 32px;
+    }
+
+    .description {
+        font-size: 14px;
+    }
+
+    .action-buttons {
+        flex-direction: column;
+    }
+
+    .change-button,
+    .back-button-bottom {
+        width: 100%;
+    }
+
+    .detail-footer {
+        padding: 18px 10px;
+    }
 }
 
-.back-button {
-min-width: auto;
-padding: 9px 12px;
+.delete-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 18px;
+    border: none;
+    border-radius: 12px;
+    background: #fff1f2;
+    color: #dc2626;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    transition: all .25s ease;
 }
 
-.back-button span:last-child {
-display: none;
+.delete-button:hover {
+    background: #fee2e2;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(220, 38, 38, .12);
 }
 
-.header-space {
-display: none;
-}
-
-.shop-title {
-font-size: 13px;
-letter-spacing: 0.5px;
-}
-
-.shop-icon {
-width: 38px;
-height: 38px;
-}
-
-.detail-container {
-padding: 20px 12px;
-}
-
-.product-card {
-border-radius: 20px;
-}
-
-.image-section {
-min-height: 330px;
-padding: 20px;
-}
-
-.image-background {
-min-height: 290px;
-padding: 10px;
-}
-
-.product-info {
-padding: 30px 22px;
-}
-
-.product-name {
-font-size: 32px;
-}
-
-.product-price {
-font-size: 32px;
-}
-
-.description {
-font-size: 14px;
-}
-
-.action-buttons {
-flex-direction: column;
-}
-
-.change-button,
-.back-button-bottom {
-width: 100%;
-}
-
-.detail-footer {
-padding: 18px 10px;
-}
+.delete-button span {
+    font-size: 15px;
 }

@@ -1,12 +1,9 @@
-<div class="detail-page" [class.drink-page]="product.category === 'drink'" [class.food-page]="product.category === 'food'">
+<div class="detail-page" [class.drink-page]="product.category === 'drink'"
+  [class.food-page]="product.category === 'food'">
   <header class="detail-header">
     <button class="back-button" (click)="goBack()">
-      <span class="back-icon">
-        ←
-      </span>
-      <span>
-        Back
-      </span>
+      <span class="back-icon">←</span>
+      <span>Back</span>
     </button>
     <div class="shop-title">
       <span class="shop-icon">
@@ -16,92 +13,79 @@
         {{ product.category === 'drink' ? 'TAKEAWAY DRINK' : 'TAKEAWAY FOOD' }}
       </span>
     </div>
-    <div class="header-space">
-    </div>
+    <div class="header-space"></div>
   </header>
   <main class="detail-container">
     @if (loading) {
-      <div class="loading">
-        <div class="loading-icon">
-          🥤
-        </div>
-        <p>
-          Loading product...
-        </p>
-      </div>
+    <div class="loading">
+      <div class="loading-icon">🥤</div>
+      <p>Loading product...</p>
+    </div>
     } @else {
-      <div class="product-card">
-        <div class="image-section">
-          <div class="image-background">
-            <img [src]="product.img" [alt]="product.name" class="product-image">
-          </div>
-        </div>
-        <div class="product-info">
-          <div class="product-category" [class.drink-category]="product.category === 'drink'" [class.food-category]="product.category === 'food'">
-            {{ product.category === 'drink' ? '🥤 ĐỒ UỐNG' : '🍔 ĐỒ ĂN NHANH' }}
-          </div>
-          <h1 class="product-name">
-            {{ product.name }}
-          </h1>
-          <div class="divider">
-          </div>
-          <div class="price-label">
-            PRICE
-          </div>
-          <div class="product-price">
-            {{ product.price | number:'1.0-0' }} ₫
-          </div>
-          <p class="description">
-            @if (product.category === 'drink') {
-              Một lựa chọn tuyệt vời cho ngày mới.
-              Thưởng thức đồ uống yêu thích của bạn
-              theo phong cách Takeaway Drink.
-            } @else {
-              Một món ăn hấp dẫn dành cho bạn.
-              Thưởng thức những món ăn ngon
-              theo phong cách Takeaway Food.
-            }
-          </p>
-          <div class="product-type-info">
-            <span class="type-icon">
-              {{ product.category === 'drink' ? '🥤' : '🍔' }}
-            </span>
-            <div>
-              <strong>
-                {{ product.category === 'drink' ? 'Đồ uống' : 'Đồ ăn nhanh' }}
-              </strong>
-              <small>
-                {{ product.category === 'drink' ? 'Fresh drinks • Takeaway' : 'Fresh food • Fast service' }}
-              </small>
-            </div>
-          </div>
-          <div class="action-buttons">
-            <button class="change-button" (click)="changeProduct()">
-              <span>
-                ✎
-              </span>
-              Change
-            </button>
-            <button class="back-button-bottom" (click)="goBack()">
-              <span>
-                ←
-              </span>
-              Back to Home
-            </button>
-          </div>
+    <div class="product-card">
+      <div class="image-section">
+        <div class="image-background">
+          <img [src]="product.img" [alt]="product.name" class="product-image">
         </div>
       </div>
+      <div class="product-info">
+        <div class="product-category" [class.drink-category]="product.category === 'drink'"
+          [class.food-category]="product.category === 'food'">
+          {{ product.category === 'drink' ? '🥤 ĐỒ UỐNG' : '🍔 ĐỒ ĂN NHANH' }}
+        </div>
+        <h1 class="product-name">{{ product.name }}</h1>
+        <div class="divider"></div>
+        <div class="price-label">PRICE</div>
+        <div class="product-price">
+          {{ product.price | number:'1.0-0' }} ₫
+        </div>
+        <p class="description">
+          @if (product.category === 'drink') {
+          Một lựa chọn tuyệt vời cho ngày mới.
+          Thưởng thức đồ uống yêu thích của bạn
+          theo phong cách Takeaway Drink.
+          } @else {
+          Một món ăn hấp dẫn dành cho bạn.
+          Thưởng thức những món ăn ngon
+          theo phong cách Takeaway Food.
+          }
+        </p>
+        <div class="product-type-info">
+          <span class="type-icon">
+            {{ product.category === 'drink' ? '🥤' : '🍔' }}
+          </span>
+          <div>
+            <strong>
+              {{ product.category === 'drink' ? 'Đồ uống' : 'Đồ ăn nhanh' }}
+            </strong>
+            <small>
+              {{ product.category === 'drink' ? 'Fresh drinks • Takeaway' : 'Fresh food • Fast service' }}
+            </small>
+          </div>
+        </div>
+        <div class="action-buttons">
+          <button class="change-button" (click)="changeProduct()">
+            <span>✎</span>
+            Change
+          </button>
+          <button class="delete-button" (click)="deleteProduct()">
+            <span>🗑️</span>
+            Delete
+          </button>
+          <button class="back-button-bottom" (click)="goBack()">
+            <span>←</span>
+            Back to Home
+          </button>
+        </div>
+      </div>
+    </div>
     }
   </main>
   <footer class="detail-footer">
     @if (product.category === 'drink') {
-      <span>
-        🥤 Fresh drinks • Fast service • Takeaway
-      </span>
+    <span>🥤 Fresh drinks • Fast service • Takeaway</span>
     } @else {
-      <span>
-        🍔 Fresh food • Fast service • Takeaway
-      </span>
+    <span>🍔 Fresh food • Fast service • Takeaway</span>
     }
   </footer>
 </div>

@@ -76,7 +76,7 @@ app.get('/api/products/:id', async (req, res) => {
     }
 });
 // CREATE PRODUCT
-app.post('/api/products', upload.single('image'), async (req, res) => {
+app.post('/api/products', upload.single('img'), async (req, res) => {
   try {
     const { name, price, category } = req.body;
     if (!req.file) {
@@ -109,7 +109,7 @@ app.post('/api/products', upload.single('image'), async (req, res) => {
 app.put('/api/products/:id', upload.single('img'), async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, price } = req.body;
+    const { name, price, category } = req.body;
     const oldProduct = await pool.query('SELECT * FROM product WHERE id = $1', [id]);
     if (oldProduct.rows.length === 0) {
       if (req.file) {
@@ -127,8 +127,8 @@ app.put('/api/products/:id', upload.single('img'), async (req, res) => {
     let result;
     try {
       result = await pool.query(
-        `UPDATE product SET name = $1, price = $2, img = $3 WHERE id = $4 RETURNING *`,
-        [name, price, imagePath, id]
+        `UPDATE product SET name = $1, price = $2, category = $3, img = $4 WHERE id = $5 RETURNING *`,
+        [name, price, category, imagePath, id]
       );
     } catch (error) {
       if (req.file) {
@@ -157,29 +157,37 @@ app.put('/api/products/:id', upload.single('img'), async (req, res) => {
 });
 // DELETE PRODUCT
 app.delete('/api/products/:id', async (req, res) => {
-    try {
-        const { id } = req.params;
-        const result = await pool.query('DELETE FROM product WHERE id = $1 RETURNING *', [id]);
-        if (result.rows.length === 0) {
-            return res.status(404).json({
-                status: 404,
-                message: 'Không tìm thấy sản phẩm',
-                data: null
-            });
-        }
-        res.status(200).json({
-            status: 200,
-            message: 'Success',
-            data: result.rows[0]
-        });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({
-            status: 500,
-            message: 'Lỗi xóa sản phẩm',
-            data: null
-        });
+  try {
+    const { id } = req.params;
+    const productResult = await pool.query('SELECT * FROM product WHERE id = $1', [id]);
+    if (productResult.rows.length === 0) {
+      return res.status(404).json({
+        status: 404,
+        message: 'Không tìm thấy sản phẩm',
+        data: null
+      });
     }
+    const product = productResult.rows[0];
+    const result = await pool.query('DELETE FROM product WHERE id = $1 RETURNING *', [id]);
+    if (result.rows.length > 0 && product.img) {
+      const imagePath = path.join(__dirname, 'src', 'assets', 'list-drinks', path.basename(product.img));
+      if (fs.existsSync(imagePath)) {
+        fs.unlinkSync(imagePath);
+      }
+    }
+    res.status(200).json({
+      status: 200,
+      message: 'Success',
+      data: result.rows[0]
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      status: 500,
+      message: 'Lỗi xóa sản phẩm',
+      data: null
+    });
+  }
 });
 app.listen(PORT, () => {
     console.log(`Server đang chạy tại http://localhost:${PORT}`);
