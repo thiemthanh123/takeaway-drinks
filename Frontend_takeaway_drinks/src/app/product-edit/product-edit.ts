@@ -1,8 +1,10 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, DestroyRef, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ProductService } from '../../services/product.service';
+import { SpinnerService } from '../../services/spinner.service';
 
 @Component({
   selector: 'app-product-edit',
@@ -11,22 +13,20 @@ import { ProductService } from '../../services/product.service';
   templateUrl: './product-edit.html',
   styleUrl: './product-edit.css'
 })
-
 export class ProductEditComponent implements OnInit {
   productForm!: FormGroup;
   productId!: number;
-  loading = false;
-  saving = false;
-  selectedFile: File | null = null;
-  imagePreview = '';
-  showImage = false;
+  selectedFile = signal<File | null>(null);
+  imagePreview = signal('');
+  showImage = signal(false);
+  private destroyRef = inject(DestroyRef);
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private fb: FormBuilder,
     private productService: ProductService,
-    private cdr: ChangeDetectorRef
+    private spinnerService: SpinnerService
   ) { }
 
   ngOnInit(): void {
@@ -36,32 +36,47 @@ export class ProductEditComponent implements OnInit {
       category: ['', Validators.required]
     });
     const id = this.route.snapshot.paramMap.get('id');
-    if (id) {
-      this.productId = Number(id);
-      this.getProduct();
+    if (!id) {
+      this.router.navigate(['/home']);
+      return;
     }
+    this.productId = Number(id);
+    if (!this.productId) {
+      this.router.navigate(['/home']);
+      return;
+    }
+    this.getProduct();
   }
 
+  // Lấy thông tin sản phẩm
   getProduct(): void {
-    this.loading = true;
-    this.productService.getProduct(this.productId).subscribe({
-      next: (data: any) => {
-        const product = data.data;
-        this.productForm.patchValue({
-          name: product.name,
-          price: product.price,
-          category: product.category
-        });
-        this.imagePreview = product.img || '';
-        this.loading = false;
-        this.cdr.detectChanges();
-      },
-      error: (error: any) => {
-        console.error('Không thể lấy thông tin sản phẩm:', error);
-        this.loading = false;
-        alert('Không thể tải thông tin sản phẩm!');
-      }
-    });
+    this.spinnerService.showSpinner();
+    this.productService.getProduct(this.productId)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (data: any) => {
+          if (data.status !== 200 || !data.data) {
+            this.spinnerService.hideSpinner();
+            alert('Không tìm thấy sản phẩm!');
+            this.router.navigate(['/home']);
+            return;
+          }
+          const product = data.data;
+          this.productForm.patchValue({
+            name: product.name,
+            price: Number(product.price),
+            category: product.category
+          });
+          this.imagePreview.set(product.img || '');
+          this.spinnerService.hideSpinner();
+        },
+        error: (error: any) => {
+          console.error('Không thể lấy thông tin sản phẩm:', error);
+          this.spinnerService.hideSpinner();
+          alert('Không thể tải thông tin sản phẩm!');
+          this.router.navigate(['/home']);
+        }
+      });
   }
 
   get categoryClass(): string {
@@ -105,31 +120,33 @@ export class ProductEditComponent implements OnInit {
     }
     if (!file.type.startsWith('image/')) {
       alert('Vui lòng chọn file hình ảnh!');
-      this.selectedFile = null;
+      this.selectedFile.set(null);
+      input.value = '';
       return;
     }
-    this.selectedFile = file;
-    this.showImage = false;
+    this.selectedFile.set(file);
+    this.showImage.set(false);
     const reader = new FileReader();
     reader.onload = () => {
-      this.imagePreview = reader.result as string;
-      this.cdr.detectChanges();
+      this.imagePreview.set(reader.result as string);
     };
     reader.readAsDataURL(file);
   }
 
   toggleImage(): void {
-    this.showImage = !this.showImage;
+    this.showImage.update(value => !value);
   }
 
   get currentImageName(): string {
-    if (!this.imagePreview) {
+    const preview = this.imagePreview();
+    const file = this.selectedFile();
+    if (!preview) {
       return 'Chưa có ảnh';
     }
-    if (this.selectedFile) {
-      return this.selectedFile.name;
+    if (file) {
+      return file.name;
     }
-    return this.imagePreview
+    return preview
       .split('/')
       .pop()
       ?.replace(/^\d+-\d+_/, '') || 'Ảnh hiện tại';
@@ -140,33 +157,41 @@ export class ProductEditComponent implements OnInit {
       this.productForm.markAllAsTouched();
       return;
     }
-    this.saving = true;
     const formData = new FormData();
-    formData.append('name', this.productForm.value.name);
-    formData.append('price', this.productForm.value.price.toString());
-    formData.append('category', this.productForm.value.category);
-    if (this.selectedFile) {
-      formData.append('img', this.selectedFile);
+    formData.append('name', String(this.productForm.get('name')?.value ?? ''));
+    formData.append('price', String(this.productForm.get('price')?.value ?? ''));
+    formData.append('category', String(this.productForm.get('category')?.value ?? ''));
+    const file = this.selectedFile();
+    if (file) {
+      formData.append('img', file);
     }
-    this.productService.updateProduct(this.productId, formData).subscribe({
-      next: () => {
-        this.saving = false;
-        alert('Cập nhật sản phẩm thành công!');
-        this.router.navigate(['/']);
-      },
-      error: (error: any) => {
-        console.error('Lỗi cập nhật:', error);
-        this.saving = false;
-        alert('Cập nhật sản phẩm thất bại!');
-      }
-    });
+    this.spinnerService.showSpinner();
+    this.productService.updateProduct(this.productId, formData)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (response: any) => {
+          this.spinnerService.hideSpinner();
+          if (response.status === 200) {
+            alert('Cập nhật sản phẩm thành công!');
+            this.router.navigate(['/home']);
+            return;
+          }
+          alert('Cập nhật sản phẩm thất bại!');
+        },
+        error: (error: any) => {
+          console.error('Lỗi cập nhật:', error);
+          this.spinnerService.hideSpinner();
+          alert('Cập nhật sản phẩm thất bại!');
+        }
+      });
   }
 
   back(): void {
-    this.router.navigate(['/']);
+    this.router.navigate(['/home']);
   }
 
   handleImageError(): void {
-    this.imagePreview = 'https://via.placeholder.com/500x350?text=No+Image';
+    this.imagePreview.set('');
+    this.showImage.set(false);
   }
 }

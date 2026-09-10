@@ -1,59 +1,34 @@
 <header class="main-header">
   <div class="header-container">
-
-    <!-- Logo / Brand -->
-    <div class="brand">
-      <div class="brand-icon">
-        ☕
-      </div>
-
+    <div class="brand" routerLink="/">
+      <div class="brand-icon">☕</div>
       <div class="brand-info">
         <span class="brand-name">TakeDrink</span>
         <span class="brand-subtitle">Coffee & Drinks</span>
       </div>
     </div>
 
-    <!-- Navigation -->
     <nav class="group-navigation">
-
-      <a
-        class="nav-item"
-        routerLink="/create"
-        title="Thêm sản phẩm">
-
+      <a class="nav-item add-product" routerLink="/create" title="Thêm sản phẩm">
         <div class="nav-icon">
-          <img
-            src="assets/cart-coffe.png"
-            alt="Thêm sản phẩm"
-            width="40"
-            height="40"
-          />
+          <span class="add-icon">+</span>
         </div>
-
         <span>Thêm sản phẩm</span>
       </a>
-      <a class="nav-item"
-        routerLink="/poster"
-        title="Cửa hàng"
-      >
-      <div
-        class="nav-item"
-        title="Cửa hàng">
 
-        <div class="nav-icon" routerLink="/poster">
-          <img
-            src="assets/shop-takeaway-drinks.png"
-            alt="Cửa hàng"
-            width="40"
-            height="40"
-          />
+      <a class="nav-item order-link" routerLink="/orders" title="Đơn hàng">
+        <div class="nav-icon">
+          <span class="order-icon">🧾</span>
         </div>
-
-        <span>Cửa hàng</span>
-      </div>
+        <span>Đơn hàng</span>
       </a>
 
+      <a class="nav-item shop-link" routerLink="/home" title="Cửa hàng">
+        <div class="nav-icon">
+          <img src="assets/shop-takeaway-drinks.png" alt="Cửa hàng" width="40" height="40" />
+        </div>
+        <span>Cửa hàng</span>
+      </a>
     </nav>
-
   </div>
 </header>

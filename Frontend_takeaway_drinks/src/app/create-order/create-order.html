@@ -1,0 +1,175 @@
+<div class="create-order-page">
+  <main class="create-order-container">
+    <section class="page-header">
+      <div>
+        <span class="page-label">CREATE ORDER</span>
+        <h1>Tạo đơn hàng</h1>
+        <p>Chọn sản phẩm và số lượng cho đơn hàng mới.</p>
+      </div>
+      <button type="button" class="back-button" (click)="cancel()">
+        <span>←</span>
+        Quay lại
+      </button>
+    </section>
+    @if (errorMessage) {
+    <div class="error-message">
+      <span>!</span>
+      <span>{{ errorMessage }}</span>
+    </div>
+    }
+    <div class="order-layout">
+      <section class="product-section">
+        <div class="section-title">
+          <div>
+            <h2>Chọn sản phẩm</h2>
+            <p>Chọn danh mục để xem sản phẩm.</p>
+          </div>
+        </div>
+        <div class="category-buttons">
+          <button type="button" class="category-button" [class.active]="selectedCategory === 'drink' && showProducts"
+            (click)="selectCategory('drink')">
+            <span class="category-icon">☕</span>
+            <span class="category-info">
+              <strong>Đồ uống</strong>
+            </span>
+          </button>
+          <button type="button" class="category-button" [class.active]="selectedCategory === 'food' && showProducts"
+            (click)="selectCategory('food')">
+            <span class="category-icon">🥐</span>
+            <span class="category-info">
+              <strong>Đồ ăn</strong>
+            </span>
+          </button>
+        </div>
+        @if (showProducts) {
+        <div class="products-area">
+          <div class="product-toolbar">
+            <div class="search-box">
+              <span class="search-icon">⌕</span>
+              <input type="text" [(ngModel)]="searchText" (ngModelChange)="searchProducts()"
+                placeholder="Tìm sản phẩm..." />
+            </div>
+            <span class="product-count">
+              {{ filteredProducts.length }} sản phẩm
+            </span>
+          </div>
+          @if (loadingProducts) {
+          <div class="loading-products">
+            <div class="loading-spinner"></div>
+            <span>Đang tải sản phẩm...</span>
+          </div>
+          }
+          @if (!loadingProducts && paginatedProducts.length > 0) {
+          <div class="product-list">
+            @for (product of paginatedProducts; track product.id) {
+            <article class="product-card" [class.selected]="isSelected(product)">
+              <div class="product-image">
+                @if (product.image) {
+                <img [src]="product.image" [alt]="product.name" />
+                } @else {
+                <span>
+                  {{ product.category === 'drink' ? '☕' : '🥐' }}
+                </span>
+                }
+              </div>
+              <div class="product-info">
+                <h3>{{ product.name }}</h3>
+                <strong>{{ formatPrice(product.price) }} ₫</strong>
+              </div>
+              <button type="button" class="add-button" [class.added]="isSelected(product)"
+                (click)="addProduct(product)">
+                @if (isSelected(product)) {
+                <span>{{ getProductQuantity(product) }}</span>
+                } @else {
+                <span>+</span>
+                }
+              </button>
+            </article>
+            }
+          </div>
+          }
+          @if (!loadingProducts && paginatedProducts.length === 0) {
+          <div class="no-products">
+            <div>⌕</div>
+            <h3>Không tìm thấy sản phẩm</h3>
+            <p>Thử tìm kiếm với từ khóa khác.</p>
+          </div>
+          }
+          @if (!loadingProducts && totalPages > 1) {
+          <div class="pagination">
+            <button type="button" class="page-arrow" [disabled]="currentPage === 1" (click)="previousPage()">
+              ←
+            </button>
+            @for (page of pageNumbers; track page) {
+            <button type="button" class="page-number" [class.active]="currentPage === page" (click)="goToPage(page)">
+              {{ page }}
+            </button>
+            }
+            <button type="button" class="page-arrow" [disabled]="currentPage === totalPages" (click)="nextPage()">
+              →
+            </button>
+          </div>
+          }
+        </div>
+        }
+      </section>
+      <aside class="order-summary">
+        <div class="summary-header">
+          <div>
+            <span class="summary-label">YOUR ORDER</span>
+            <h2>Đơn hàng</h2>
+          </div>
+          @if (totalItems > 0) {
+          <span class="item-count">{{ totalItems }} món</span>
+          }
+        </div>
+        @if (selectedItems.length > 0) {
+        <div class="selected-items">
+          @for (item of selectedItems; track item.product.id) {
+          <div class="selected-item">
+            <div class="selected-item-info">
+              <strong>{{ item.product.name }}</strong>
+              <span>{{ formatPrice(item.product.price) }} ₫</span>
+            </div>
+            <div class="quantity-control">
+              <button type="button" (click)="decreaseQuantity(item)">
+                −
+              </button>
+              <span>{{ item.quantity }}</span>
+              <button type="button" (click)="increaseQuantity(item)">
+                +
+              </button>
+            </div>
+          </div>
+          }
+        </div>
+        <div class="summary-bottom">
+          <div class="summary-row">
+            <span>Số lượng</span>
+            <strong>{{ totalItems }} món</strong>
+          </div>
+          <div class="summary-total">
+            <span>Tổng tiền</span>
+            <strong>{{ formatPrice(totalPrice) }} ₫</strong>
+          </div>
+          <button type="button" class="submit-order-button" [disabled]="creatingOrder" (click)="createOrder()">
+            @if (creatingOrder) {
+            <span class="button-spinner"></span>
+            Đang tạo đơn...
+            } @else {
+            Tạo đơn hàng
+            <span>→</span>
+            }
+          </button>
+        </div>
+        } @else {
+        <div class="empty-order">
+          <div class="empty-order-icon">🧾</div>
+          <h3>Chưa có sản phẩm</h3>
+          <p>Chọn sản phẩm bên trái để thêm vào đơn hàng.</p>
+        </div>
+        }
+      </aside>
+    </div>
+  </main>
+</div>

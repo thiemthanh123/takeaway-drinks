@@ -1,31 +1,18 @@
 <div class="product-list">
-  @if (!loading) {
   <div class="search-section">
     <div class="search-box">
       <span class="search-icon">⌕</span>
-      <input
-        type="text"
-        [(ngModel)]="searchText"
-        placeholder="Tìm món ăn hoặc thức uống...">
+      <input type="text" [(ngModel)]="searchText" placeholder="Tìm món ăn hoặc thức uống...">
       @if (searchText) {
-      <button
-        type="button"
-        class="clear-search"
-        (click)="searchText = ''">
+      <button type="button" class="clear-search" (click)="searchText = ''">
         ×
       </button>
       }
     </div>
   </div>
-  }
+
   <div class="products-body">
-    @if (loading) {
-    <div class="empty-state">
-      <div class="empty-icon">⏳</div>
-      <h3>Đang tải thực đơn...</h3>
-      <p>Vui lòng chờ trong giây lát.</p>
-    </div>
-    } @else if (products.length === 0) {
+    @if (products.length === 0) {
     <div class="empty-state">
       <div class="empty-icon">🍽️</div>
       <h3>Chưa có sản phẩm</h3>
@@ -39,10 +26,7 @@
         Không có món nào phù hợp với
         "<strong>{{ searchText }}</strong>"
       </p>
-      <button
-        type="button"
-        class="empty-reset-btn"
-        (click)="searchText = ''">
+      <button type="button" class="empty-reset-btn" (click)="searchText = ''">
         Xem tất cả món
       </button>
     </div>
@@ -50,24 +34,20 @@
     <div class="products-grid">
       @for (product of filteredProducts; track product.id) {
       <article class="product-card">
-        <a
-          [routerLink]="['/detail', product.id]"
-          class="product-image-link">
+        <a [routerLink]="['/detail', product.id]" class="product-image-link">
           <div class="product-image">
-            <img
-              [src]="product.image"
-              [alt]="product.name">
+            <img [src]="product.image" [alt]="product.name">
             <div class="image-overlay">
               <span>Xem món</span>
             </div>
           </div>
         </a>
+
         <div class="product-info">
-          <a
-            [routerLink]="['/detail', product.id]"
-            class="product-name">
+          <a [routerLink]="['/detail', product.id]" class="product-name">
             {{ product.name | upperCasePipe }}
           </a>
+
           <div class="product-footer">
             <span class="price">
               {{ product.price | currency }}

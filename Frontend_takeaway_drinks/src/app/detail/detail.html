@@ -1,46 +1,55 @@
-<div class="detail-page" [class.drink-page]="product.category === 'drink'"
-  [class.food-page]="product.category === 'food'">
-  <header class="detail-header">
-    <button class="back-button" (click)="goBack()">
-      <span class="back-icon">←</span>
-      <span>Back</span>
-    </button>
-    <div class="shop-title">
-      <span class="shop-icon">
-        {{ product.category === 'drink' ? '🥤' : '🍔' }}
-      </span>
-      <span>
-        {{ product.category === 'drink' ? 'TAKEAWAY DRINK' : 'TAKEAWAY FOOD' }}
-      </span>
-    </div>
-    <div class="header-space"></div>
-  </header>
+<div class="detail-page" [class.drink-page]="product()?.category === 'drink'"
+  [class.food-page]="product()?.category === 'food'">
+
   <main class="detail-container">
-    @if (loading) {
-    <div class="loading">
-      <div class="loading-icon">🥤</div>
-      <p>Loading product...</p>
-    </div>
-    } @else {
+
+    @if (product()) {
+
     <div class="product-card">
+
       <div class="image-section">
         <div class="image-background">
-          <img [src]="product.img" [alt]="product.name" class="product-image">
+          <img [src]="product()?.img" [alt]="product()?.name" class="product-image">
+        </div>
+
+        <div class="image-category">
+          @if (product()?.category === 'drink') {
+          <span>🥤</span>
+          <span>ĐỒ UỐNG</span>
+          } @else {
+          <span>🍔</span>
+          <span>ĐỒ ĂN NHANH</span>
+          }
         </div>
       </div>
+
       <div class="product-info">
-        <div class="product-category" [class.drink-category]="product.category === 'drink'"
-          [class.food-category]="product.category === 'food'">
-          {{ product.category === 'drink' ? '🥤 ĐỒ UỐNG' : '🍔 ĐỒ ĂN NHANH' }}
+
+        <div class="product-category" [class.drink-category]="product()?.category === 'drink'"
+          [class.food-category]="product()?.category === 'food'">
+
+          @if (product()?.category === 'drink') {
+          🥤 ĐỒ UỐNG
+          } @else {
+          🍔 ĐỒ ĂN NHANH
+          }
+
         </div>
-        <h1 class="product-name">{{ product.name }}</h1>
+
+        <h1 class="product-name">
+          {{ product()?.name }}
+        </h1>
+
         <div class="divider"></div>
+
         <div class="price-label">PRICE</div>
+
         <div class="product-price">
-          {{ product.price | number:'1.0-0' }} ₫
+          {{ product()?.price | number:'1.0-0' }} ₫
         </div>
+
         <p class="description">
-          @if (product.category === 'drink') {
+          @if (product()?.category === 'drink') {
           Một lựa chọn tuyệt vời cho ngày mới.
           Thưởng thức đồ uống yêu thích của bạn
           theo phong cách Takeaway Drink.
@@ -50,42 +59,83 @@
           theo phong cách Takeaway Food.
           }
         </p>
+
         <div class="product-type-info">
+
           <span class="type-icon">
-            {{ product.category === 'drink' ? '🥤' : '🍔' }}
+            @if (product()?.category === 'drink') {
+            🥤
+            } @else {
+            🍔
+            }
           </span>
+
           <div>
             <strong>
-              {{ product.category === 'drink' ? 'Đồ uống' : 'Đồ ăn nhanh' }}
+              @if (product()?.category === 'drink') {
+              Đồ uống
+              } @else {
+              Đồ ăn nhanh
+              }
             </strong>
+
             <small>
-              {{ product.category === 'drink' ? 'Fresh drinks • Takeaway' : 'Fresh food • Fast service' }}
+              @if (product()?.category === 'drink') {
+              Fresh drinks • Takeaway
+              } @else {
+              Fresh food • Fast service
+              }
             </small>
           </div>
+
         </div>
+
         <div class="action-buttons">
-          <button class="change-button" (click)="changeProduct()">
+
+          <button type="button" class="change-button" (click)="changeProduct()">
             <span>✎</span>
-            Change
+            Chỉnh sửa
           </button>
-          <button class="delete-button" (click)="deleteProduct()">
+
+          <button type="button" class="delete-button" (click)="deleteProduct()">
             <span>🗑️</span>
-            Delete
+            Xóa
           </button>
-          <button class="back-button-bottom" (click)="goBack()">
+
+          <button type="button" class="back-button-bottom" (click)="goBack()">
             <span>←</span>
-            Back to Home
+            Về trang chủ
           </button>
+
         </div>
+
       </div>
     </div>
-    }
-  </main>
-  <footer class="detail-footer">
-    @if (product.category === 'drink') {
-    <span>🥤 Fresh drinks • Fast service • Takeaway</span>
+
     } @else {
+
+    <div class="empty-product">
+      <div class="empty-icon">🍽️</div>
+      <h2>Không tìm thấy sản phẩm</h2>
+      <p>Sản phẩm không tồn tại hoặc đã được xóa.</p>
+
+      <button type="button" class="back-button-bottom" (click)="goBack()">
+        ← Về trang chủ
+      </button>
+    </div>
+
+    }
+
+  </main>
+
+  <footer class="detail-footer">
+    @if (product()?.category === 'drink') {
+    <span>🥤 Fresh drinks • Fast service • Takeaway</span>
+    } @else if (product()?.category === 'food') {
     <span>🍔 Fresh food • Fast service • Takeaway</span>
+    } @else {
+    <span>☕ TakeDrink • Fresh products • Takeaway</span>
     }
   </footer>
+
 </div>

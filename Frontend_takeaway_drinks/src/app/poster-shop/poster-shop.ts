@@ -8,10 +8,13 @@ import { Router } from '@angular/router';
   styleUrl: './poster-shop.css'
 })
 export class PosterShopComponent {
-
   constructor(private router: Router) {}
-
-  goBack(): void {
-    this.router.navigate(['/']);
+  // Chuyển đến trang Home
+  goHome(): void {
+    this.router.navigate(['/home']);
+  }
+  // Cuộn đến phần giới thiệu
+  scrollToStory(): void {
+    document.getElementById('story')?.scrollIntoView({ behavior: 'smooth' });
   }
 }

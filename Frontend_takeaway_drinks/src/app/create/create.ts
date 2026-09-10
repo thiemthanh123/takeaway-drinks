@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ProductService } from '../../services/product.service';
+import { SpinnerService } from '../../services/spinner.service';
 
 @Component({
   imports: [ReactiveFormsModule],
@@ -16,91 +17,59 @@ export class Create {
     name: new FormControl('', Validators.required),
     price: new FormControl('', Validators.required),
     category: new FormControl('', Validators.required)
-  })
-
+  });
   selectedCategory: string | null = null;
 
+  get name() { return this.product.get('name'); }
+  get price() { return this.product.get('price'); }
 
-  get name() {
-    return this.product.get('name');
-  }
-
-  get price() {
-    return this.product.get('price');
-  }
-
-  constructor(private productService: ProductService, private router: Router) {
-
-  }
+  constructor(
+    private productService: ProductService,
+    private spinnerService: SpinnerService,
+    private router: Router
+  ) { }
 
   onImageSelected(event: Event): void {
-  const input = event.target as HTMLInputElement;
-
-  if (!input.files || input.files.length === 0) {
-    return;
+    const input = event.target as HTMLInputElement;
+    if (!input.files || input.files.length === 0) {
+      return;
+    }
+    const file = input.files[0];
+    this.imageFile = file;
+    this.imagePreview = URL.createObjectURL(file);
   }
 
-  const file = input.files[0];
-
-  this.imageFile = file;
-
-  // Tạo URL tạm thời để preview ngay
-  this.imagePreview = URL.createObjectURL(file);
-
-}
-
   back(): void {
-    this.router.navigate(['/']);
+    this.router.navigate(['/home']);
   }
 
   handleAdd(): void {
-
     if (this.product.invalid) {
       this.product.markAllAsTouched();
       return;
     }
-
     if (!this.imageFile) {
       alert('Vui lòng chọn ảnh sản phẩm');
       return;
     }
-
     const formData = new FormData();
-
-    formData.append(
-      'name',
-      String(this.product.get('name')?.value ?? '')
-    );
-
-    formData.append(
-      'price',
-      String(this.product.get('price')?.value ?? '')
-    );
-
-    formData.append(
-      'img',
-      this.imageFile
-    );
-
-    formData.append(
-      'category',
-      this.selectedCategory || ''
-    );
-
-    this.productService.createProduct(formData)
-      .subscribe({
-        next: (response) => {
-          if (response.status === 200) {
-            this.router.navigate(['/']);
-          }
-        },
-        error: (error) => {
-          console.error(
-            'CREATE PRODUCT ERROR:',
-            error
-          );
+    formData.append('name', String(this.product.get('name')?.value ?? ''));
+    formData.append('price', String(this.product.get('price')?.value ?? ''));
+    formData.append('img', this.imageFile);
+    formData.append('category', this.selectedCategory || '');
+    this.spinnerService.showSpinner();
+    this.productService.createProduct(formData).subscribe({
+      next: response => {
+        if (response.status === 200) {
+          this.router.navigate(['/home']);
         }
-      });
+        this.spinnerService.hideSpinner();
+      },
+      error: error => {
+        console.error('CREATE PRODUCT ERROR:', error);
+        this.spinnerService.hideSpinner();
+      }
+    });
   }
 
   selectCategory(category: string): void {
@@ -109,12 +78,4 @@ export class Create {
       category: category
     });
   }
-
-  changeCategory(): void {
-    this.selectedCategory = null;
-    this.product.patchValue({
-      category: ''
-    });
-  }
-
 }

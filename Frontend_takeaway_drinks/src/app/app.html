@@ -2,6 +2,11 @@
 
   <app-header-layout />
 
-    <router-outlet />
-
+  <router-outlet />
+  @if (spinnerService.spinner$ | async)
+  {
+    <div class="spinner-overlay">
+      <div class="spinner"></div>
+    </div>
+  }
 </main>

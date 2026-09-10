@@ -7,6 +7,11 @@ export const routes: Routes = [
     {
         path: '',
         loadComponent: () =>
+            import('./poster-shop/poster-shop').then(m => m.PosterShopComponent)
+    },
+    {
+        path: 'home',
+        loadComponent: () =>
             import('./home/home').then(m => m.Home)
     },
     {
@@ -25,9 +30,18 @@ export const routes: Routes = [
             import('./product-edit/product-edit').then(m => m.ProductEditComponent)
     },
     {
-        path: 'poster',
+        path: 'orders',
         loadComponent: () =>
-            import('./poster-shop/poster-shop').then(m => m.PosterShopComponent)
+            import('./orders/orders').then(m => m.Orders)
     },
-    
+    {
+        path: 'orders/create',
+        loadComponent: () =>
+            import('./create-order/create-order').then(m => m.CreateOrderComponent)
+    },
+    {
+        path: 'orders/detail/:id',
+        loadComponent: () =>
+            import('./detail-order/detail-order').then(m => m.DetailOrder)
+    },
 ];

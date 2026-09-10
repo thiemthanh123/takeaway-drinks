@@ -3,80 +3,127 @@
   <div class="page-decoration decoration-2"></div>
   <div class="edit-card">
     <div class="header">
-      <div>
+      <div class="header-info">
         <span class="badge">
-          {{ productForm.get('category')?.value === 'food' ? '🍔 TakeFood Away' : '🥤 TakeDrink Away' }}
+          @if (productForm.get('category')?.value === 'food') {
+          <span>🍔</span>
+          <span>TAKEFOOD</span>
+          } @else if (productForm.get('category')?.value === 'drink') {
+          <span>🥤</span>
+          <span>TAKEDRINK</span>
+          } @else {
+          <span>🍽️</span>
+          <span>PRODUCT</span>
+          }
         </span>
+        @if (productForm.get('category')?.value === 'food') {
+        <h1>Chỉnh sửa món ăn</h1>
+        <p>Cập nhật thông tin món ăn trong menu của cửa hàng.</p>
+        } @else if (productForm.get('category')?.value === 'drink') {
+        <h1>Chỉnh sửa đồ uống</h1>
+        <p>Cập nhật thông tin đồ uống trong menu của cửa hàng.</p>
+        } @else {
         <h1>Chỉnh sửa sản phẩm</h1>
-        <p>
-          Cập nhật thông tin
-          {{ productForm.get('category')?.value === 'food' ? 'đồ ăn' : 'đồ uống' }}
-          của cửa hàng
-        </p>
+        <p>Cập nhật thông tin sản phẩm trong menu của cửa hàng.</p>
+        }
       </div>
-      <button type="button" class="back-btn" (click)="back()">← Back</button>
+      <button type="button" class="back-btn" (click)="back()">← Quay lại</button>
     </div>
-    @if (loading) {
-    <div class="loading">
-      <div class="loading-icon">
-        {{ productForm.get('category')?.value === 'food' ? '🍔' : '🥤' }}
+    <div class="category-intro">
+      <div class="intro-icon">
+        @if (productForm.get('category')?.value === 'food') {
+        🍔
+        } @else if (productForm.get('category')?.value === 'drink') {
+        🥤
+        } @else {
+        🍽️
+        }
       </div>
-      <p>Đang tải thông tin sản phẩm...</p>
+      <div>
+        @if (productForm.get('category')?.value === 'food') {
+        <strong>Thông tin món ăn</strong>
+        <span>Cập nhật thông tin và hình ảnh của món ăn.</span>
+        } @else if (productForm.get('category')?.value === 'drink') {
+        <strong>Thông tin đồ uống</strong>
+        <span>Cập nhật thông tin và hình ảnh của đồ uống.</span>
+        } @else {
+        <strong>Thông tin sản phẩm</strong>
+        <span>Cập nhật đầy đủ thông tin sản phẩm.</span>
+        }
+      </div>
     </div>
-    } @else {
     <div class="content">
       <form class="form-section" [formGroup]="productForm" (ngSubmit)="save()">
+        <div class="form-section-header">
+          <span class="section-label">PRODUCT INFORMATION</span>
+          @if (productForm.get('category')?.value === 'food') {
+          <h2>Thông tin món ăn</h2>
+          <p>Chỉnh sửa thông tin cơ bản của món ăn.</p>
+          } @else if (productForm.get('category')?.value === 'drink') {
+          <h2>Thông tin đồ uống</h2>
+          <p>Chỉnh sửa thông tin cơ bản của đồ uống.</p>
+          } @else {
+          <h2>Thông tin sản phẩm</h2>
+          <p>Chỉnh sửa thông tin cơ bản của sản phẩm.</p>
+          }
+        </div>
         <div class="form-group">
-          <label>Loại sản phẩm <span>*</span></label>
-          <div class="input-wrapper category-wrapper">
-            <span class="input-icon">
-              {{ productForm.get('category')?.value === 'food' ? '🍔' : '🥤' }}
-            </span>
-            <select formControlName="category" class="category-select">
-              <option value="" disabled>Chọn loại sản phẩm</option>
-              <option value="food">🍔 Đồ ăn</option>
-              <option value="drink">🥤 Đồ uống</option>
-            </select>
+          <label>Hạng mục <span>*</span></label>
+          <div class="category-select">
+            <button type="button" class="category-select-option"
+              [class.active]="productForm.get('category')?.value === 'drink'"
+              (click)="productForm.patchValue({category:'drink'})">
+              <span>🥤</span>
+              <span>
+                <strong>Đồ uống</strong>
+                <small>Coffee, trà sữa, nước ép...</small>
+              </span>
+            </button>
+            <button type="button" class="category-select-option"
+              [class.active]="productForm.get('category')?.value === 'food'"
+              (click)="productForm.patchValue({category:'food'})">
+              <span>🍔</span>
+              <span>
+                <strong>Đồ ăn nhanh</strong>
+                <small>Hamburger, pizza, khoai tây...</small>
+              </span>
+            </button>
           </div>
           @if (productForm.get('category')?.touched && productForm.get('category')?.invalid) {
-          <small class="error">Vui lòng chọn loại sản phẩm.</small>
-          }
-          @if (productForm.get('category')?.value === 'food') {
-          <div class="category-description category-food">
-            <span class="category-description-icon">🍔</span>
-            <div>
-              <strong>Đồ ăn</strong>
-              <small>Sản phẩm thuộc nhóm thức ăn</small>
-            </div>
-          </div>
-          }
-          @if (productForm.get('category')?.value === 'drink') {
-          <div class="category-description category-drink">
-            <span class="category-description-icon">🥤</span>
-            <div>
-              <strong>Đồ uống</strong>
-              <small>Sản phẩm thuộc nhóm thức uống</small>
-            </div>
-          </div>
+          <small class="error">Vui lòng chọn hạng mục sản phẩm.</small>
           }
         </div>
         <div class="form-group">
-          <label>Tên sản phẩm <span>*</span></label>
+          <label for="productName">
+            @if (productForm.get('category')?.value === 'food') {
+            Tên món ăn
+            } @else if (productForm.get('category')?.value === 'drink') {
+            Tên đồ uống
+            } @else {
+            Tên sản phẩm
+            }
+            <span>*</span>
+          </label>
           <div class="input-wrapper">
-            <span class="input-icon">
-              {{ productForm.get('category')?.value === 'food' ? '🍔' : '🥤' }}
-            </span>
-            <input type="text" formControlName="name" placeholder="Ví dụ: Trà đào cam sả">
+            <span class="input-icon">{{ categoryIcon }}</span>
+            <input id="productName" type="text" formControlName="name"
+              placeholder="Ví dụ: {{ productForm.get('category')?.value === 'food' ? 'Hamburger bò' : 'Trà đào cam sả' }}">
           </div>
           @if (productForm.get('name')?.touched && productForm.get('name')?.invalid) {
-          <small class="error">Vui lòng nhập tên sản phẩm.</small>
+          <small class="error">
+            @if (productForm.get('name')?.hasError('required')) {
+            Vui lòng nhập tên sản phẩm.
+            } @else if (productForm.get('name')?.hasError('minlength')) {
+            Tên sản phẩm phải có ít nhất 2 ký tự.
+            }
+          </small>
           }
         </div>
         <div class="form-group">
-          <label>Giá sản phẩm <span>*</span></label>
+          <label for="productPrice">Giá sản phẩm <span>*</span></label>
           <div class="input-wrapper">
             <span class="input-icon">💰</span>
-            <input type="number" formControlName="price" placeholder="Ví dụ: 35000" min="0">
+            <input id="productPrice" type="number" formControlName="price" placeholder="Ví dụ: 35000" min="0">
             <span class="currency">VNĐ</span>
           </div>
           @if (productForm.get('price')?.touched && productForm.get('price')?.invalid) {
@@ -89,24 +136,30 @@
             <div class="selected-icon">🖼️</div>
             <div class="selected-details">
               <strong>{{ currentImageName }}</strong>
-              @if (selectedFile) {
-              <small>{{ (selectedFile.size / 1024 / 1024).toFixed(2) }} MB</small>
+              @if (selectedFile()) {
+              <small>{{ (selectedFile()!.size / 1024 / 1024).toFixed(2) }} MB</small>
+              } @else {
+              <small>Ảnh hiện tại của sản phẩm</small>
               }
             </div>
           </div>
-          @if (imagePreview) {
+          @if (imagePreview()) {
           <button type="button" class="preview-btn" (click)="toggleImage()">
-            {{ showImage ? 'Ẩn ảnh' : 'Xem ảnh' }}
+            @if (showImage()) {
+            Ẩn ảnh
+            } @else {
+            Xem ảnh
+            }
           </button>
           }
-          @if (showImage && imagePreview) {
+          @if (showImage() && imagePreview()) {
           <div class="image-wrapper">
-            <img [src]="imagePreview" [alt]="productForm.get('name')?.value || 'Product image'"
+            <img [src]="imagePreview()" [alt]="productForm.get('name')?.value || 'Product image'"
               (error)="handleImageError()">
           </div>
           }
-          <input #fileInput type="file" accept="image/png,image/jpeg,image/webp"
-            (change)="onFileSelected($event)" hidden>
+          <input #fileInput type="file" accept="image/png,image/jpeg,image/webp" (change)="onFileSelected($event)"
+            hidden>
           <button type="button" class="upload-btn" (click)="fileInput.click()">
             <span class="upload-icon">📁</span>
             <span class="upload-content">
@@ -115,12 +168,12 @@
             </span>
             <span class="upload-arrow">→</span>
           </button>
-          @if (selectedFile) {
+          @if (selectedFile()) {
           <div class="file-selected">
             <span class="file-success">✓</span>
             <div>
               <strong>Đã chọn ảnh mới</strong>
-              <small>{{ selectedFile.name }}</small>
+              <small>{{ selectedFile()!.name }}</small>
             </div>
           </div>
           } @else {
@@ -128,19 +181,19 @@
           }
         </div>
         <div class="actions">
-          <button type="button" class="btn btn-back" (click)="back()" [disabled]="saving">
-            ← Back
-          </button>
-          <button type="submit" class="btn btn-save" [disabled]="saving">
-            @if (!saving) {
-            <span>✓ Save Product</span>
+          <button type="button" class="btn btn-back" (click)="back()">← Quay lại</button>
+          <button type="submit" class="btn btn-save">
+            <span>✓</span>
+            @if (productForm.get('category')?.value === 'food') {
+            Lưu món ăn
+            } @else if (productForm.get('category')?.value === 'drink') {
+            Lưu đồ uống
             } @else {
-            <span>⏳ Đang lưu...</span>
+            Lưu sản phẩm
             }
           </button>
         </div>
       </form>
     </div>
-    }
   </div>
 </div>

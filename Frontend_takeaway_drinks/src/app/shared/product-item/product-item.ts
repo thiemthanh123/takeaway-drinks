@@ -18,8 +18,7 @@ import { CurrencyPipe } from '../pipes/CurrencyPipe.pipe';
 })
 export class ProductItemComponent {
   @Input() products: any[] = [];
-  @Input() loading: boolean = true;
-  searchText: string = '';
+  searchText = '';
 
   get filteredProducts(): any[] {
     const keyword = this.searchText.trim().toLowerCase();

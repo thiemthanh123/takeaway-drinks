@@ -1,0 +1,95 @@
+<div class="order-page">
+  <main class="order-container">
+    <section class="order-header">
+      <div>
+        <span class="page-label">ORDER MANAGEMENT</span>
+        <h1>Đơn hàng</h1>
+        <p>Quản lý và theo dõi các đơn hàng của cửa hàng.</p>
+      </div>
+      <button type="button" class="create-order-button" (click)="createOrder()">
+        <span class="add-icon">+</span>
+        <span>Tạo đơn hàng</span>
+      </button>
+    </section>
+    <section class="order-filter">
+      <div class="search-box">
+        <span class="search-icon">⌕</span>
+        <input type="text" [(ngModel)]="searchText" placeholder="Tìm mã đơn hàng..." />
+      </div>
+      <div class="status-filter">
+        <select [(ngModel)]="selectedStatus">
+          <option value="all">Tất cả trạng thái</option>
+          <option value="pending">Chờ xử lý</option>
+          <option value="preparing">Đang chuẩn bị</option>
+          <option value="completed">Hoàn thành</option>
+          <option value="cancelled">Đã hủy</option>
+        </select>
+      </div>
+    </section>
+    <section class="orders-section">
+      <div class="section-header">
+        <div>
+          <h2>Danh sách đơn hàng</h2>
+          <span>{{ filteredOrders.length }} đơn hàng</span>
+        </div>
+      </div>
+      @if (filteredOrders.length > 0) {
+      <div class="orders-list">
+        @for (order of filteredOrders; track order.id) {
+        <article class="order-card">
+          <div class="order-main">
+            <div class="order-left">
+              <div class="order-number">
+                <span class="receipt-icon">🧾</span>
+                <div>
+                  <strong>{{ order.order_code }}</strong>
+                  <span>{{ formatDate(order.created_at) }}</span>
+                </div>
+              </div>
+              <span class="status-badge" [class]="getStatusClass(order.status)">
+                <span class="status-dot"></span>
+                {{ getStatusLabel(order.status) }}
+              </span>
+            </div>
+            <div class="order-right">
+              <div class="order-price">
+                <span>Tổng tiền</span>
+                <strong>
+                  {{ formatPrice(order.total_amount) }} ₫
+                </strong>
+              </div>
+              <button type="button" class="detail-button" (click)="viewOrder(order)">
+                Xem chi tiết
+                <span>→</span>
+              </button>
+            </div>
+          </div>
+        </article>
+        }
+      </div>
+      }
+      @if (filteredOrders.length === 0) {
+      <div class="empty-state">
+        <div class="empty-icon">🧾</div>
+        <h3>Chưa có đơn hàng</h3>
+        @if (orders().length === 0) {
+        <p>Hiện tại cửa hàng chưa có đơn hàng nào.</p>
+        <button type="button" class="empty-create-button" (click)="createOrder()">
+          <span class="add-icon">+</span>
+          Tạo đơn hàng
+        </button>
+        } @else {
+        <p>Không có đơn hàng phù hợp với bộ lọc hiện tại.</p>
+        <button type="button" class="clear-filter-button" (click)="searchText = ''; selectedStatus = 'all'">
+          Xóa bộ lọc
+        </button>
+        }
+      </div>
+      }
+    </section>
+  </main>
+  <footer class="order-footer">
+    <span>☕ TakeDrink</span>
+    <span>Fresh drinks • Fast service • Takeaway</span>
+  </footer>
+</div>

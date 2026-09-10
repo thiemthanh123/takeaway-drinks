@@ -1,125 +1,90 @@
 <div class="home-page">
-  <div class="background-shape shape-1"></div>
-  <div class="background-shape shape-2"></div>
-  <div class="background-shape shape-3"></div>
-  <div class="home-container">
-    <header class="hero">
-      <div class="hero-top">
-        <div class="brand">
-          <div class="brand-icon">🥤</div>
-          <div>
-            <span class="brand-name">TakeDrink Away</span>
-            <span class="brand-subtitle">Food & Beverage</span>
-          </div>
-        </div>
-        <div class="status">
-          <span class="status-dot"></span>
-          Open today
-        </div>
+  <section class="hero-section">
+    <div class="hero-content">
+      <span class="hero-badge">TAKEDRINK</span>
+      <h1>Thưởng thức hương vị<br><span>yêu thích của bạn</span></h1>
+      <p>Khám phá những món đồ uống và đồ ăn thơm ngon được chuẩn bị dành riêng cho bạn.</p>
+      <button type="button" class="hero-button" (click)="scrollToMenu()">
+        Xem thực đơn
+        <span>↓</span>
+      </button>
+    </div>
+  </section>
+
+  <section class="menu-section" id="menu">
+    <div class="menu-header">
+      <div>
+        <span class="section-label">THỰC ĐƠN</span>
+        <h2>Khám phá menu</h2>
+        <p>Chọn danh mục để tìm món yêu thích của bạn</p>
       </div>
-      <div class="hero-content">
-        <div class="hero-text">
-          <span class="welcome-label">WELCOME TO</span>
-          <h1>
-            TAM LEP
-            <span>SHOP</span>
-          </h1>
-          <p>
-            Những món ăn ngon và thức uống yêu thích,
-            được chọn lựa dành riêng cho bạn.
-          </p>
-          <div class="hero-tags">
-            <span>☕ Fresh drinks</span>
-            <span>🍔 Delicious food</span>
-          </div>
-        </div>
-        <div class="hero-visual">
-          <div class="visual-circle"></div>
-          <div class="floating-item item-drink">🥤</div>
-          <div class="floating-item item-food">🍔</div>
-          <div class="main-food">🍕</div>
-          <div class="sparkle sparkle-1">✦</div>
-          <div class="sparkle sparkle-2">✦</div>
-          <div class="sparkle sparkle-3">✧</div>
-        </div>
+
+      <div class="product-count">
+        <strong>{{ products().length }}</strong>
+        <span>sản phẩm</span>
       </div>
-    </header>
-    <section class="category-section">
-      <div class="section-heading">
+    </div>
+
+    <div class="category-tabs">
+      <button type="button" class="category-tab all-tab" [class.active]="selectedCategory() === null"
+        (click)="selectCategory('all')">
+        <span class="tab-icon">🍽️</span>
+        <span>Tất cả</span>
+      </button>
+
+      <button type="button" class="category-tab drink-tab" [class.active]="selectedCategory() === 'drink'"
+        (click)="selectCategory('drink')">
+        <span class="tab-icon">🥤</span>
+        <span>Đồ uống</span>
+      </button>
+
+      <button type="button" class="category-tab food-tab" [class.active]="selectedCategory() === 'food'"
+        (click)="selectCategory('food')">
+        <span class="tab-icon">🍰</span>
+        <span>Đồ ăn</span>
+      </button>
+    </div>
+
+    @if (selectedCategory() === null) {
+    <div class="menu-panel all-panel">
+      <div class="panel-heading">
         <div>
-          <span class="section-label">EXPLORE OUR MENU</span>
-          <h2>Bạn muốn thưởng thức gì?</h2>
-          <p>Chọn một danh mục để khám phá những sản phẩm hấp dẫn.</p>
+          <span class="panel-label">MENU</span>
+          <h3>Tất cả sản phẩm</h3>
         </div>
-        <div class="menu-icon">✦</div>
+        <span class="panel-count">{{ products().length }} món</span>
       </div>
-      <div class="category-sticky">
-        <div class="category-switcher">
-          <button
-            type="button"
-            class="category-tab drink-tab"
-            [class.active]="selectedCategory === 'drink'"
-            (click)="selectCategory('drink')">
-            <span class="tab-icon">🥤</span>
-            <span class="tab-content">
-              <strong>Đồ uống</strong>
-            </span>
-            <span class="tab-arrow">
-              {{ selectedCategory === 'drink' ? '✓' : '→' }}
-            </span>
-          </button>
-          <button
-            type="button"
-            class="category-tab food-tab"
-            [class.active]="selectedCategory === 'food'"
-            (click)="selectCategory('food')">
-            <span class="tab-icon">🍔</span>
-            <span class="tab-content">
-              <strong>Đồ ăn</strong>
-            </span>
-            <span class="tab-arrow">
-              {{ selectedCategory === 'food' ? '✓' : '→' }}
-            </span>
-          </button>
+
+      <app-product-item [products]="products()"></app-product-item>
+    </div>
+    }
+
+    @if (selectedCategory() === 'drink') {
+    <div class="menu-panel drink-panel">
+      <div class="panel-heading">
+        <div>
+          <span class="panel-label">DRINK</span>
+          <h3>Đồ uống</h3>
         </div>
+        <span class="panel-count">{{ drinkProducts().length }} món</span>
       </div>
-      <div class="category-content">
-        @if (selectedCategory === 'drink') {
-        <div class="menu-panel drink-panel">
-          <div class="menu-panel-header">
-            <div>
-              <span class="panel-label">DRINK MENU</span>
-              <h3>🥤 Thức uống của chúng tôi</h3>
-              <p>Những thức uống tươi mát đang chờ bạn khám phá.</p>
-            </div>
-          </div>
-          <app-product-item
-            [products]="drinkProducts"
-            [loading]="loading">
-          </app-product-item>
+
+      <app-product-item [products]="drinkProducts()"></app-product-item>
+    </div>
+    }
+
+    @if (selectedCategory() === 'food') {
+    <div class="menu-panel food-panel">
+      <div class="panel-heading">
+        <div>
+          <span class="panel-label">FOOD</span>
+          <h3>Đồ ăn</h3>
         </div>
-        }
-        @if (selectedCategory === 'food') {
-        <div class="menu-panel food-panel">
-          <div class="menu-panel-header">
-            <div>
-              <span class="panel-label">FOOD MENU</span>
-              <h3>🍔 Món ngon của chúng tôi</h3>
-              <p>Những món ăn hấp dẫn được chuẩn bị dành cho bạn.</p>
-            </div>
-          </div>
-          <app-product-item
-            [products]="foodProducts"
-            [loading]="loading">
-          </app-product-item>
-        </div>
-        }
+        <span class="panel-count">{{ foodProducts().length }} món</span>
       </div>
-    </section>
-    <footer class="home-footer">
-      <span>☕ Made with love</span>
-      <span>•</span>
-      <span>TakeDrink Away</span>
-    </footer>
-  </div>
+
+      <app-product-item [products]="foodProducts()"></app-product-item>
+    </div>
+    }
+  </section>
 </div>

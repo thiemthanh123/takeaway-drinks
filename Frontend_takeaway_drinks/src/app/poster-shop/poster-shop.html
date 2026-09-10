@@ -1,158 +1,105 @@
-<div class="poster-page">
-
-  <div class="poster-card">
-
-    <!-- Nút Back -->
-    <button class="back-button" type="button" (click)="goBack()">
-      ← Back
-    </button>
-
-    <!-- Hero -->
-    <div class="poster-hero">
-
-      <div class="hero-content">
-
-        <div class="brand-badge">
-          ☕ TakeDrink Away
-        </div>
-
-        <h1>
-          TAM LEP
-          <span>COFFEE SHOP</span>
-        </h1>
-
-        <p class="hero-description">
-          Nơi những ly coffee thơm ngon gặp gỡ những món ăn hấp dẫn.
-          Một không gian nhỏ, ấm áp và đầy năng lượng dành cho bạn
-          mỗi ngày.
-        </p>
-
-        <div class="hero-highlight">
-          <div>
-            <strong>☕</strong>
-            <span>Fresh Coffee</span>
-          </div>
-
-          <div>
-            <strong>🥐</strong>
-            <span>Fresh Food</span>
-          </div>
-
-          <div>
-            <strong>🥤</strong>
-            <span>Take Away</span>
-          </div>
-        </div>
-
+<div class="poster-page" id="home">
+  <nav class="navbar">
+    <a class="logo" routerLink="/">
+      <div class="logo-icon">☕</div>
+      <div class="logo-info">
+        <strong>TakeDrink</strong>
+        <small>Coffee & Drinks</small>
       </div>
-
-      <!-- Ảnh chính -->
-      <div class="hero-image">
-        <img
-          src="assets/Poster/Coffe.png"
-          alt="Tam Lep Coffee"
-        >
-      </div>
-
+    </a>
+    <div class="nav-links">
+      <a href="#home">Home</a>
+      <a href="#story">Our Story</a>
     </div>
-
-    <!-- Gallery -->
-    <div class="gallery">
-
-      <div class="gallery-item large">
-        <img
-          src="assets/Poster/Coffe.png"
-          alt="Coffee"
-        >
-        <div class="image-label">
-          ☕ Signature Coffee
-        </div>
+    <button type="button" class="nav-button" (click)="goHome()">View Menu →</button>
+  </nav>
+  <section class="hero-section">
+    <div class="hero-text">
+      <span class="badge">✦ TAM LEP COFFEE SHOP</span>
+      <h1>Good coffee.<span>Good mood.</span></h1>
+      <p>Nơi những ly coffee thơm ngon gặp gỡ những món ăn hấp dẫn. Một chút ngọt ngào, một chút cà phê và thật nhiều
+        năng lượng dành cho bạn mỗi ngày.</p>
+      <div class="hero-buttons">
+        <button type="button" class="primary-button" (click)="goHome()">Khám phá thực đơn →</button>
+        <button type="button" class="secondary-button" (click)="scrollToStory()">Câu chuyện của chúng tôi</button>
       </div>
-
-      <div class="gallery-item">
-        <img
-          src="assets/Poster/food.png"
-          alt="Food"
-        >
-        <div class="image-label">
-          🍔 Delicious Food
-        </div>
+      <div class="stats">
+        <div><strong>100%</strong><span>Fresh</span></div>
+        <div><strong>24/7</strong><span>Good Mood</span></div>
+        <div><strong>∞</strong><span>Happiness</span></div>
       </div>
-
-      <div class="gallery-item">
-        <img
-          src="assets/Poster/drink.png"
-          alt="Drinks"
-        >
-        <div class="image-label">
-          🥤 Fresh Drinks
-        </div>
-      </div>
-
     </div>
-
-    <!-- Description -->
-    <div class="shop-description">
-
-      <div class="description-content">
-
-        <span class="small-title">
-          OUR STORY
-        </span>
-
-        <h2>
-          Một chút ngọt ngào,
-          <span>một chút cà phê.</span>
-        </h2>
-
-        <p>
-          Tam Lep Coffee là điểm đến dành cho những người yêu coffee,
-          đồ ăn ngon và những khoảnh khắc thư giãn. Chúng tôi lựa chọn
-          những nguyên liệu chất lượng để tạo nên những thức uống
-          và món ăn được phục vụ mỗi ngày.
-        </p>
-
-        <p>
-          Dù bạn đang cần một ly coffee để bắt đầu ngày mới,
-          một món ăn nhẹ cho buổi chiều hay một thức uống mang đi,
-          TakeDrink Away luôn sẵn sàng phục vụ bạn.
-        </p>
-
+    <div class="hero-visual">
+      <div class="circle"></div>
+      <img src="assets/Poster/Coffe.png" alt="Tam Lep Coffee">
+      <div class="floating-card coffee-card"><span>☕</span>
+        <div><strong>Fresh Coffee</strong><small>Made with love</small></div>
       </div>
-
-      <div class="quote-box">
-        <span>“</span>
-
-        <p>
-          Good coffee.
-          Good food.
-          Good mood.
-        </p>
-
-        <small>
-          — Tam Lep Coffee
-        </small>
+      <div class="floating-card food-card"><span>🥐</span>
+        <div><strong>Fresh Food</strong><small>Every single day</small></div>
       </div>
-
+      <span class="star star-1">✦</span>
+      <span class="star star-2">✦</span>
+      <span class="star star-3">✦</span>
     </div>
-
-    <!-- Footer -->
-    <div class="poster-footer">
-
-      <div>
-        <strong>TakeDrink Away</strong>
-        <span>Fresh • Delicious • Happy</span>
-      </div>
-
-      <button
-        class="footer-back-button"
-        type="button"
-        (click)="goBack()">
-        ← Quay lại
-      </button>
-
+  </section>
+  <section class="feature-section">
+    <div class="section-title">
+      <span>WELCOME TO TAKE DRINK</span>
+      <h2>Một ngày tuyệt vời <strong>bắt đầu từ đây.</strong></h2>
+      <p>Coffee thơm, đồ ăn ngon và những thức uống mát lạnh. Tất cả được chuẩn bị để mang đến cho bạn một trải nghiệm
+        thật đặc biệt.</p>
     </div>
-
-  </div>
-
+    <div class="feature-grid">
+      <article class="feature-card">
+        <span>☕</span>
+        <small>01</small>
+        <h3>Fresh Coffee</h3>
+        <p>Những ly coffee đậm đà với hương vị đặc trưng và nguyên liệu chất lượng.</p>
+      </article>
+      <article class="feature-card active">
+        <span>🥐</span>
+        <small>02</small>
+        <h3>Fresh Food</h3>
+        <p>Những món ăn thơm ngon được chuẩn bị mỗi ngày để đồng hành cùng coffee.</p>
+      </article>
+      <article class="feature-card">
+        <span>🥤</span>
+        <small>03</small>
+        <h3>Take Away</h3>
+        <p>Mang theo hương vị yêu thích của bạn đến bất cứ đâu trong ngày.</p>
+      </article>
+    </div>
+  </section>
+  <section class="story-section" id="story">
+    <div class="story-image">
+      <img src="assets/Poster/Coffe.png" alt="Tam Lep Coffee">
+      <div class="story-badge">☕ Made with love</div>
+    </div>
+    <div class="story-content">
+      <span>OUR STORY</span>
+      <h2>Một chút ngọt ngào,<strong>một chút cà phê.</strong></h2>
+      <p>Tam Lep Coffee là điểm đến dành cho những người yêu coffee, đồ ăn ngon và những khoảnh khắc thư giãn.</p>
+      <p>Chúng tôi lựa chọn những nguyên liệu chất lượng để tạo nên những thức uống và món ăn được phục vụ mỗi ngày.</p>
+      <div class="quote">“Good coffee. Good food. Good mood.”<small>— Tam Lep Coffee</small></div>
+    </div>
+  </section>
+  <section class="cta-section">
+    <span>TAKE A BREAK</span>
+    <h2>Your next favorite <strong>is waiting.</strong></h2>
+    <p>Khám phá thực đơn và tìm ra hương vị yêu thích của riêng bạn.</p>
+    <button type="button" class="primary-button" (click)="goHome()">Xem thực đơn →</button>
+  </section>
+  <footer>
+    <div class="footer-logo">
+      <span>☕</span>
+      <div><strong>TakeDrink Away</strong><small>Fresh • Delicious • Happy</small></div>
+    </div>
+    <div class="footer-links">
+      <a href="#home">Home</a>
+      <a href="#story">Our Story</a>
+      <button type="button" (click)="goHome()">Menu</button>
+    </div>
+    <p>© 2026 TakeDrink Away</p>
+  </footer>
 </div>
