@@ -187,7 +187,7 @@ export class ProductEditComponent implements OnInit {
   }
 
   back(): void {
-    this.router.navigate(['/home']);
+    this.router.navigate(['/detail', this.productId]);
   }
 
   handleImageError(): void {

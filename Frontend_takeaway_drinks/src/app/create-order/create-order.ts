@@ -18,7 +18,7 @@ import { CreateOrder } from '../shared/types/createorder';
 })
 export class CreateOrderComponent implements OnInit {
   searchText = '';
-  selectedCategory = signal<'drink' | 'food'>('drink');
+  selectedCategory=signal<'drink'|'food'|null>(null);
   currentPage = 1;
   readonly itemsPerPage = 10;
   products = signal<ProductItems[]>([]);
@@ -64,7 +64,7 @@ export class CreateOrderComponent implements OnInit {
   get filteredProducts(): ProductItems[] {
     const keyword = this.searchText.trim().toLowerCase();
     return this.products().filter(product => {
-      const matchCategory = product.category === this.selectedCategory();
+      const matchCategory = !this.selectedCategory() || product.category === this.selectedCategory();
       const matchSearch = !keyword || product.name.toLowerCase().includes(keyword);
       return matchCategory && matchSearch;
     });
