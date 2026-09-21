@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const pool = require('./db');
@@ -6,9 +7,15 @@ const path = require('path');
 const fs = require('fs');
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
-app.use(cors());
+
+app.use(cors({
+  origin: [
+    'http://localhost:4200',
+    'https://your-netlify-site.netlify.app'
+  ]
+}));
 app.use(express.json());
 app.use('/assets', express.static(path.join(__dirname, 'src', 'assets')));
 
@@ -36,7 +43,7 @@ app.get('/api/products', async (req, res) => {
     const result = await pool.query('SELECT * FROM product ORDER BY id');
     const products = result.rows.map(product => ({
       ...product,
-      img: product.img ? `http://localhost:${PORT}/${product.img}` : null
+      img: product.img ? `${process.env.PROTOCOL}${process.env.HOSTNAME}:${process.env.PORT}/${product.img}` : null
     }));
     res.status(200).json({
       status: 200,
@@ -67,7 +74,7 @@ app.get('/api/products/:id', async (req, res) => {
     }
     const product = {
       ...result.rows[0],
-      img: result.rows[0].img ? `http://localhost:${PORT}/${result.rows[0].img}` : null
+      img: result.rows[0].img ? `${process.env.PROTOCOL}${process.env.HOSTNAME}:${process.env.PORT}/${result.rows[0].img}` : null
     };
     res.status(200).json({
       status: 200,
@@ -346,7 +353,7 @@ app.get('/api/orders/:id', async (req, res) => {
     );
     const items = detailResult.rows.map(item => ({
       ...item,
-      img: item.img ? `http://localhost:${PORT}/${item.img}` : null
+      img: item.img ? `${process.env.PROTOCOL}${process.env.HOSTNAME}:${process.env.PORT}/${item.img}` : null
     }));
     res.status(200).json({
       status: 200,
@@ -431,6 +438,6 @@ app.patch('/api/orders/:id/status', async (req, res) => {
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`Server đang chạy tại http://localhost:${PORT}`);
+app.listen(PORT, '0.0.0.0', () => {
+    console.log(`Server running on port ${PORT}`);
 });
