@@ -13,13 +13,13 @@ const PORT = process.env.PORT || 3000;
 app.use(cors({
   origin: [
     'http://localhost:4200',
-    'https://your-netlify-site.netlify.app'
+    'https://tamlep.netlify.app'
   ]
 }));
 app.use(express.json());
 app.use('/assets', express.static(path.join(__dirname, 'src', 'assets')));
 
-const uploadDir = path.join(__dirname, 'Backend_takeaway_drinks', '..', 'src', 'assets', 'list-drinks');
+const uploadDir = path.join(__dirname, 'src', 'assets', 'list-drinks');
 
 if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir, { recursive: true });
@@ -43,7 +43,7 @@ app.get('/api/products', async (req, res) => {
     const result = await pool.query('SELECT * FROM product ORDER BY id');
     const products = result.rows.map(product => ({
       ...product,
-      img: product.img ? `${process.env.PROTOCOL}${process.env.HOSTNAME}:${process.env.PORT}/${product.img}` : null
+      img: product.img ? `${process.env.BACKEND_URL}/${product.img}` : null
     }));
     res.status(200).json({
       status: 200,
@@ -74,7 +74,7 @@ app.get('/api/products/:id', async (req, res) => {
     }
     const product = {
       ...result.rows[0],
-      img: result.rows[0].img ? `${process.env.PROTOCOL}${process.env.HOSTNAME}:${process.env.PORT}/${result.rows[0].img}` : null
+      img: result.rows[0].img ? `${process.env.BACKEND_URL}/${result.rows[0].img}` : null
     };
     res.status(200).json({
       status: 200,
@@ -353,7 +353,7 @@ app.get('/api/orders/:id', async (req, res) => {
     );
     const items = detailResult.rows.map(item => ({
       ...item,
-      img: item.img ? `${process.env.PROTOCOL}${process.env.HOSTNAME}:${process.env.PORT}/${item.img}` : null
+      img: item.img ? `${process.env.BACKEND_URL}/${item.img}` : null
     }));
     res.status(200).json({
       status: 200,
